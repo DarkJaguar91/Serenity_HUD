@@ -52,7 +52,7 @@ local barType = {
 			return GameLib.GetPlayerUnit():GetAbsorptionValue()
 	 	end,
 	},
-	["player Shield&Absorb"] = {
+	["player Shield & Absorb"] = {
 		max = function()
 			return (GameLib.GetPlayerUnit():GetShieldCapacityMax() + GameLib.GetPlayerUnit():GetShieldCapacityMax())
 		end,
@@ -60,8 +60,86 @@ local barType = {
 			return (GameLib.GetPlayerUnit():GetShieldCapacity() + GameLib.GetPlayerUnit():GetShieldCapacity())
 	 	end,
 	},
-
-
+	["player 'Mana'"] = {
+		max = function()
+			return (GameLib.GetPlayerUnit():GetMaxMana())
+		end,
+		current = function() 
+			return (GameLib.GetPlayerUnit():GetMana())
+	 	end,
+	},
+	["player Resource (non stalker)"] = {
+		max = function()
+			return (GameLib.GetPlayerUnit():GetMaxResource(1))
+		end,
+		current = function() 
+			return (GameLib.GetPlayerUnit():GetResource(1))
+	 	end,
+	},
+	["Target Health"] = {
+		max = function()
+			if GameLib.GetTargetUnit() then
+				return (GameLib.GetTargetUnit():GetMaxHealth())
+			else
+				return 0
+			end
+		end,
+		current = function() 
+			if GameLib.GetTargetUnit() then
+				return (GameLib.GetTargetUnit():GetHealth())
+			else
+				return 0
+			end
+	 	end,
+	},
+	["Target Shield"] = {
+		max = function()
+			if GameLib.GetTargetUnit() then
+				return (GameLib.GetTargetUnit():GetShieldCapacityMax())
+			else
+				return 0
+			end
+		end,
+		current = function() 
+			if GameLib.GetTargetUnit() then
+				return (GameLib.GetTargetUnit():GetShieldCapacity())
+			else
+				return 0
+			end
+	 	end,
+	},
+	["Target Shield & Absorb"] = {
+		max = function()
+			if GameLib.GetTargetUnit() then
+				return (GameLib.GetTargetUnit():GetAbsorptionMax())
+			else
+				return 0
+			end
+		end,
+		current = function() 
+			if GameLib.GetTargetUnit() then
+				return (GameLib.GetTargetUnit():GetAbsorptionValue())
+			else
+				return 0
+			end
+	 	end,
+	},
+	["Target Shield & Absorb"] = {
+		max = function()
+			if GameLib.GetTargetUnit() then
+				return (GameLib.GetTargetUnit():GetShieldCapacityMax() + GameLib.GetTargetUnit():GetAbsorptionMax())
+			else
+				return 0
+			end
+		end,
+		current = function() 
+			if GameLib.GetTargetUnit() then
+				return (GameLib.GetTargetUnit():GetShieldCapacity() + GameLib.GetTargetUnit():GetAbsorptionValue())
+			else
+				return 0
+			end
+	 	end,
+	},	
 }
 
 local function ColorToString(c)
@@ -75,6 +153,8 @@ local function StringToColor(s)
 	local b = tonumber(string.sub(s,7,8), 16)
 	return CColor.new(r / 255, g / 255, b / 255, a / 255)
 end
+
+local savedBarData = nil
 
 -----------------------------------------------------------------------------------------------
 -- Initialization
@@ -92,8 +172,8 @@ function Serenity_HUD:new(o)
 end
 
 function Serenity_HUD:Init()
-	local bHasConfigureFunction = false
-	local strConfigureButtonText = ""
+	local bHasConfigureFunction = true
+	local strConfigureButtonText = "Serenity_HUD"
 	local tDependencies = {
 		-- "UnitOrPackageName",
 	}
@@ -101,30 +181,27 @@ function Serenity_HUD:Init()
 end
 
 function Serenity_HUD:OnSave(eType)
-	if eType == GameLib.CodeEnumAddonSaveLevel.Character then
-		
-		bars = self:GetSavedBarList()
-		
-		return {
-			savedBars = bars,
-		}
+	if eType ~= GameLib.CodeEnumAddonSaveLevel.Character then
+		return
 	end
 	
-	return nil
+	local tSavedData = {}
+
+	tSavedData.savedBars = self:GetSavedBarList()
+	
+	return tSavedData
 end
 
 function Serenity_HUD:OnRestore(eType, tSavedData)
-	if eType == GameLib.CodeEnumAddonSaveLevel.Character  then
-		if not tSavedData then
-			return
-		end
-		
-		if (tSavedData.savedBars) then
-			if tSavedData.savedBarsData then
-				self:CreateBarsFromSavedData(tSavedData.savedBars) 
-			end
-		end
-	end	
+	if eType ~= GameLib.CodeEnumAddonSaveLevel.Character then
+		return
+	end
+	
+	Print("Serenity_bags")
+	
+	if tSavedData ~= nil then
+		savedBarData = tSavedData.savedBars
+	end
 end
 
 function Serenity_HUD:GetSavedBarList()
@@ -140,9 +217,6 @@ function Serenity_HUD:GetSavedBarList()
 	end
 end
 
-function Serenity_HUD:CreateBarsFromSavedData(bars)
-
-end
 
 function Serenity_HUD:GenerateDetailsArray(bar)
 	return {
@@ -155,6 +229,12 @@ function Serenity_HUD:GenerateDetailsArray(bar)
 		bar.height,
 		bar.x,
 		bar.y,
+		bar.showText,
+		bar.textX,
+		bar.textY,
+		bar.textCol,
+		bar.emptyHide,
+		bar.fullHide,
 	}
 end
 
@@ -211,12 +291,15 @@ function Serenity_HUD:OnDocLoaded()
 		-- e.g. Apollo.RegisterEventHandler("KeyDown", "OnKeyDown", self)
 		Apollo.RegisterSlashCommand("shud", "OnSerenity_HUDOn", self)
 		Apollo.RegisterSlashCommand("SHUD", "OnSerenity_HUDOn", self)
+		Apollo.RegisterEventHandler("Serenity_HUD_Config", "OnSerenity_HUDOn", self)
+		Apollo.RegisterEventHandler("InterfaceMenuListHasLoaded", "OnInterfaceMenuListHasLoaded", self)
+		Apollo.RegisterEventHandler("WindowManagementReady", "OnWindowManagementReady", self)
 
 		-- Do additional Addon initialization here
-		self.refreshTimer = ApolloTimer.Create(0.100, true, "OnPreviewRefresh", self)
+		self.refreshTimer = ApolloTimer.Create(0.200, true, "OnPreviewRefresh", self)
 		self.refreshTimer:Start()
 		
-		self.BarRefrehser = ApolloTimer.Create(0.027, true, "OnRefreshBars", self)
+		self.BarRefrehser = ApolloTimer.Create(0.100, true, "OnRefreshBars", self)
 		self.BarRefrehser:Start()
 	end
 end
@@ -226,10 +309,31 @@ end
 -----------------------------------------------------------------------------------------------
 -- Define general functions here
 
+function Serenity_HUD:OnInterfaceMenuListHasLoaded()
+	Event_FireGenericEvent("InterfaceMenuList_NewAddOn", "Serenity_HUD", {"Serenity_HUD_Config", "", ""})
+end
+
+function Serenity_HUD:OnWindowManagementReady()
+	Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = Apollo.GetString("Serenity_UI")})
+end
+
+
 function Serenity_HUD:InitialiseBars()
+	if (savedBarData) then
+		self.barList = {}
+		for i, v in pairs(savedBarData) do
+			self:CreateNewBar(v)
+		end
+		savedBarData = nil
+	end
+
 	if (#self.barList == 0) then
 	 	-- TODO gen defaults
 	end
+end
+
+function Serenity_HUD:OnConfigure()
+	self:OnSerenity_HUDOn()
 end
 
 function Serenity_HUD:OnSerenity_HUDOn()
@@ -258,6 +362,9 @@ end
 
 function Serenity_HUD:AddNewBar( wndHandler, wndControl, eMouseButton)	
 	self:CreateNewBar()
+	
+	self:ResetListItems()
+	self:resetDisplay()
 end
 
 function Serenity_HUD:CreateNewBar(params)
@@ -267,8 +374,6 @@ function Serenity_HUD:CreateNewBar(params)
 	table.insert(self.barList, newBar)
 	
 	self.listItem:SetData(self.barList[#self.barList])
-	self:ResetListItems()
-	self:resetDisplay()
 end
 
 function Serenity_HUD:OnOptionsShow( wndHandler, wndControl )	
@@ -283,6 +388,7 @@ function Serenity_HUD:OnOptionsClosed( wndHandler, wndControl )
 end
 
 function Serenity_HUD:ResetListItems()
+	if not self.wndMain:IsVisible() then return end
 	self.listItem:DestroyChildren()
 			
 	if (self.listItem:GetData() == nil) then
@@ -307,12 +413,22 @@ function Serenity_HUD:resetDisplay()
 	self.display:FindChild("EditName"):SetText(currentBar.name)
 	self.display:FindChild("Resources"):SelectItemByText(self:GetBarTypeNameFromObject(currentBar.dataObject))
 	self.display:FindChild("Textures"):SelectItemByText(self:GetTextureNameFromTextureValue(currentBar.texture))
+	
 	self.display:FindChild("FullColour"):SetBGColor(ApolloColor.new(currentBar.fullColour))
 	self.display:FindChild("EmptyColour"):SetBGColor(ApolloColor.new(currentBar.emptyColour))
+	
 	self.display:FindChild("HeightVal"):SetText(currentBar.height)
 	self.display:FindChild("WidthVal"):SetText(currentBar.width)
 	self.display:FindChild("XVal"):SetText(currentBar.x)
 	self.display:FindChild("YVal"):SetText(currentBar.y)
+	
+	self.display:FindChild("ShowBTN"):SetCheck(currentBar.showText)
+	self.display:FindChild("TextColour"):SetBGColor(currentBar.textCol)
+	self.display:FindChild("TXVal"):SetText(currentBar.textX)
+	self.display:FindChild("TYVal"):SetText(currentBar.textY)
+	
+	self.display:FindChild("EmptyHide"):SetCheck(currentBar.emptyHide)
+	self.display:FindChild("FullHide"):SetCheck(currentBar.fullHide)
 
 	self.display:FindChild("ExampleBar"):SetEmptySprite(currentBar.texture)
 	self.display:FindChild("ExampleBar"):SetFullSprite(currentBar.texture)
@@ -359,6 +475,8 @@ function Serenity_HUD:LaunchColorPicker(element)
 		colorPickerColor = StringToColor(self.listItem:GetData().fullColour)
 	elseif element == "EmptyColour" then
 		colorPickerColor = StringToColor(self.listItem:GetData().emptyColour)
+	elseif element == "TextColour" then
+		colorPickerColor = StringToColor(self.listItem:GetData().textCol)
 	end
 	
 	colorPickerSetting = element
@@ -377,6 +495,8 @@ function Serenity_HUD:OnColorUpdate()
 		elseif (colorPickerSetting == "EmptyColour") then
 			SHUDOBJ.listItem:GetData().emptyColour = ColorToString(colorPickerColor)
 			SHUDOBJ.display:FindChild("ExampleBar"):SetBGColor(ColorToString(colorPickerColor))
+		elseif (colorPickerSetting == "TextColour") then
+			SHUDOBJ.listItem:GetData().textCol = ColorToString(colorPickerColor)
 		end
 		SHUDOBJ.display:FindChild(colorPickerSetting):SetBGColor(ColorToString(colorPickerColor))
 	end
@@ -408,6 +528,18 @@ function Serenity_HUD:OnValChangeButtonDown( wndHandler, wndControl, eMouseButto
 	elseif (wndHandler:GetName() == "YInc") then
 		bar.y = bar.y - 1
 		self.display:FindChild("YVal"):SetText(bar.y)
+	elseif (wndHandler:GetName() == "TYInc") then
+		bar.textY = bar.textY - 1
+		self.display:FindChild("TYVal"):SetText(bar.textY)
+	elseif (wndHandler:GetName() == "TYDec") then
+		bar.textY = bar.textY + 1
+		self.display:FindChild("TYVal"):SetText(bar.textY)
+	elseif (wndHandler:GetName() == "TXInc") then
+		bar.textX = bar.textX - 1
+		self.display:FindChild("TXVal"):SetText(bar.textX)
+	elseif (wndHandler:GetName() == "TXDec") then
+		bar.textX = bar.textX + 1
+		self.display:FindChild("TXVal"):SetText(bar.textX)
 	end
 end
 
@@ -425,6 +557,13 @@ function Serenity_HUD:OnMouseWheelMove( wndHandler, wndControl, nLastRelativeMou
 	elseif (wndHandler:GetName() == "YVal") then
 		bar.y = bar.y + 1 * -math.floor(fScrollAmount)
 		self.display:FindChild("YVal"):SetText(bar.y)
+	elseif (wndHandler:GetName() == "TXVal") then
+		bar.textX = bar.textX + 1 * -math.floor(fScrollAmount)
+		self.display:FindChild("TXVal"):SetText(bar.textX)
+	elseif (wndHandler:GetName() == "TYVal") then
+		bar.textY = bar.textY + 1 * -math.floor(fScrollAmount)
+		self.display:FindChild("TYVal"):SetText(bar.textY)
+
 	end
 	return true
 end
@@ -451,6 +590,53 @@ end
 function Serenity_HUD:OnCopyBarclicked( wndHandler, wndControl, eMouseButton )
 	if self.listItem:GetData() then
 		self:CreateNewBar(self:GenerateDetailsArray(self.listItem:GetData()))
+	end
+	
+	self:ResetListItems()
+	self:resetDisplay()
+end
+
+function Serenity_HUD:OnTextShowChecked( wndHandler, wndControl, eMouseButton )
+	if (wndHandler:GetName() == "ShowBTN") then
+		self.listItem:GetData().showText = true
+	elseif (wndHandler:GetName() == "EmptyHide") then
+		self.listItem:GetData().emptyHide = true
+	elseif (wndHandler:GetName() == "FullHide") then
+		self.listItem:GetData().fullHide = true
+	end
+end
+
+function Serenity_HUD:OnTextShowUnChecked( wndHandler, wndControl, eMouseButton )
+	if (wndHandler:GetName() == "ShowBTN") then
+		self.listItem:GetData().showText = false
+	elseif (wndHandler:GetName() == "EmptyHide") then
+		self.listItem:GetData().emptyHide = false
+	elseif (wndHandler:GetName() == "FullHide") then
+		self.listItem:GetData().fullHide = false
+	end
+end
+
+function Serenity_HUD:OnNumberBoxChange( wndHandler, wndControl, strText )
+	local bar = self.listItem:GetData()
+	local num = nil
+	if strText == "" then
+		num = 0
+	else
+		num = tonumber(strText)
+	end
+	if num == nil then return end
+	if wndHandler:GetName() == "WidthVal" then
+		bar.width = num
+	elseif wndHandler:GetName() == "HeightVal" then
+		bar.height = num
+	elseif wndHandler:GetName() == "XVal" then
+		bar.x = num
+	elseif wndHandler:GetName() == "YVal" then
+		bar.y = num
+	elseif wndHandler:GetName() == "TXVal" then
+		bar.textX = num
+	elseif wndHandler:GetName() == "TYVal" then
+		bar.textY = num
 	end
 end
 
@@ -483,17 +669,6 @@ function SHudBar:Init(parent, params)
 	self.frame = Apollo.LoadForm(self.par.xmlDoc, "Bar", nil, self)
 	self.bar = self.frame:FindChild("BarTex")
 	self.text = self.frame:FindChild("Text")
-	self.name = "Bar" .. (#parent.barList + 1)
-	self.dataObject = barType["Player Health"]
-	self.texture = textures["Plain"]
-	self.fullColour = "ff00ff00"
-	self.emptyColour = "55ffffff"
-	self.width = 30
-	self.height = 100
-	self.x = 0
-	self.y = 0
-		
-	self.text:Show(false)
 	
 	if params then
 		self.name = params[1]
@@ -505,6 +680,12 @@ function SHudBar:Init(parent, params)
 		self.height = params[7]
 		self.x = params[8]
 		self.y = params[9]
+		self.showText = params[10]
+		self.textX = params[11]
+		self.textY = params[12]
+		self.textCol = params[13]
+		self.emptyHide = params[14]
+		self.fullHide = params[15]
 	else
 		self.name = "Bar" .. (#parent.barList + 1)
 		self.dataObject = barType["Player Health"]
@@ -515,6 +696,12 @@ function SHudBar:Init(parent, params)
 		self.height = 100
 		self.x = 0
 		self.y = 0
+		self.showText = false
+		self.textX = 0
+		self.textY = 0
+		self.textCol = "ffffffff"
+		self.emptyHide = false
+		self.fullHide = false
 	end	
 end
 
@@ -525,8 +712,22 @@ function SHudBar:Refresh()
 	self.bar:SetBarColor(ApolloColor.new(self.fullColour))
 	self.bar:SetMax(self.dataObject.max())
 	self.bar:SetProgress(self.dataObject.current())
+	self.text:Show(self.showText)
+	self.text:SetTextColor(self.textCol)
+	if self.dataObject.current() >= 1000 then
+		self.text:SetText(string.format("%.1fK", self.dataObject.current()/1000))
+	else
+		self.text:SetText(string.format("%.0f", self.dataObject.current()))
+	end
+
+	if (not self.par.wndMain:IsVisible()) and ((self.emptyHide and self.dataObject.current() <= 0) or (self.fullHide and self.dataObject.current() == self.dataObject.max())) then
+		self.frame:Show(false)
+	else
+		self.frame:Show(true)
+	end
 	
 	self.frame:SetAnchorOffsets(self.x - self.width/2, self.y - self.height/2, self.x + self.width/2, self.y + self.height/2)
+	self.text:SetAnchorOffsets(self.textX - 50, self.textY - 10, self.textX + 50, self.textY + 10)
 end
 
 function SHudBar:Destroy()
