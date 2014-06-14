@@ -64,8 +64,6 @@ local barType = {
 
 }
 
-local savedBars = {}
-
 local function ColorToString(c)
 	return string.format("%02x%02x%02x%02x", math.floor(c.a * 255 + 0.5), math.floor(c.r * 255 + 0.5), math.floor(c.g * 255 + 0.5), math.floor(c.b * 255 + 0.5))
 end
@@ -101,7 +99,64 @@ function Serenity_HUD:Init()
 	}
     Apollo.RegisterAddon(self, bHasConfigureFunction, strConfigureButtonText, tDependencies)
 end
- 
+
+function Serenity_HUD:OnSave(eType)
+	if eType == GameLib.CodeEnumAddonSaveLevel.Character then
+		
+		bars = self:GetSavedBarList()
+		
+		return {
+			savedBars = bars,
+		}
+	end
+	
+	return nil
+end
+
+function Serenity_HUD:OnRestore(eType, tSavedData)
+	if eType == GameLib.CodeEnumAddonSaveLevel.Character  then
+		if not tSavedData then
+			return
+		end
+		
+		if (tSavedData.savedBars) then
+			if tSavedData.savedBarsData then
+				self:CreateBarsFromSavedData(tSavedData.savedBars) 
+			end
+		end
+	end	
+end
+
+function Serenity_HUD:GetSavedBarList()
+	local bars = {}
+	for i, v in pairs(self.barList) do
+		local bData = self:GenerateDetailsArray(v)
+		table.insert(bars, bData)
+	end
+	if (#bars > 0) then
+		return bars
+	else
+		return nil
+	end
+end
+
+function Serenity_HUD:CreateBarsFromSavedData(bars)
+
+end
+
+function Serenity_HUD:GenerateDetailsArray(bar)
+	return {
+		bar.name,
+		self:GetBarTypeNameFromObject(bar.dataObject),
+		self:GetTextureNameFromTextureValue(bar.texture),
+		bar.fullColour,
+		bar.emptyColour,
+		bar.width,
+		bar.height,
+		bar.x,
+		bar.y,
+	}
+end
 
 -----------------------------------------------------------------------------------------------
 -- Serenity_HUD OnLoad
@@ -146,6 +201,8 @@ function Serenity_HUD:OnDocLoaded()
 		for i, v in pairs(textures) do
 			texts:AddItem(i)
 		end
+		
+		self:InitialiseBars()
 
 		-- if the xmlDoc is no longer needed, you should set it to nil
 		-- self.xmlDoc = nil
@@ -168,6 +225,12 @@ end
 -- Serenity_HUD Functions
 -----------------------------------------------------------------------------------------------
 -- Define general functions here
+
+function Serenity_HUD:InitialiseBars()
+	if (#self.barList == 0) then
+	 	-- TODO gen defaults
+	end
+end
 
 function Serenity_HUD:OnSerenity_HUDOn()
 	self.wndMain:Invoke()
@@ -193,9 +256,13 @@ end
 -- Serenity_HUDForm Functions
 -----------------------------------------------------------------------------------------------
 
-function Serenity_HUD:AddNewBar( wndHandler, wndControl, eMouseButton )	
+function Serenity_HUD:AddNewBar( wndHandler, wndControl, eMouseButton)	
+	self:CreateNewBar()
+end
+
+function Serenity_HUD:CreateNewBar(params)
 	local newBar = SHudBar:new()
-	newBar:Init(self)
+	newBar:Init(self, params)
 	
 	table.insert(self.barList, newBar)
 	
@@ -206,12 +273,7 @@ end
 
 function Serenity_HUD:OnOptionsShow( wndHandler, wndControl )	
 	if (#self.barList > 0) then
-		self:ResetListItems()
-		
-		if (self.listItem:GetData() == nil) then
-			self.listItem:SetData(self.barList[1])
-		end
-		
+		self:ResetListItems()		
 		self:resetDisplay()
 	end
 end
@@ -222,7 +284,10 @@ end
 
 function Serenity_HUD:ResetListItems()
 	self.listItem:DestroyChildren()
-
+			
+	if (self.listItem:GetData() == nil) then
+		self.listItem:SetData(self.barList[1])
+	end
 	for i, v in pairs(self.barList) do
 		local bar = Apollo.LoadForm(self.xmlDoc, "BarListItem", self.listItem, self)
 		bar:SetData(v)
@@ -236,9 +301,9 @@ function Serenity_HUD:ResetListItems()
 end
 
 function Serenity_HUD:resetDisplay()
-	self.display:Show(true)
-	
 	local currentBar = self.listItem:GetData()
+	if currentBar == nil then self.display:Show(false) return end
+	self.display:Show(true)
 	self.display:FindChild("EditName"):SetText(currentBar.name)
 	self.display:FindChild("Resources"):SelectItemByText(self:GetBarTypeNameFromObject(currentBar.dataObject))
 	self.display:FindChild("Textures"):SelectItemByText(self:GetTextureNameFromTextureValue(currentBar.texture))
@@ -246,6 +311,8 @@ function Serenity_HUD:resetDisplay()
 	self.display:FindChild("EmptyColour"):SetBGColor(ApolloColor.new(currentBar.emptyColour))
 	self.display:FindChild("HeightVal"):SetText(currentBar.height)
 	self.display:FindChild("WidthVal"):SetText(currentBar.width)
+	self.display:FindChild("XVal"):SetText(currentBar.x)
+	self.display:FindChild("YVal"):SetText(currentBar.y)
 
 	self.display:FindChild("ExampleBar"):SetEmptySprite(currentBar.texture)
 	self.display:FindChild("ExampleBar"):SetFullSprite(currentBar.texture)
@@ -330,17 +397,17 @@ function Serenity_HUD:OnValChangeButtonDown( wndHandler, wndControl, eMouseButto
 		bar.height = bar.height - 2
 		self.display:FindChild("HeightVal"):SetText(bar.height)
 	elseif (wndHandler:GetName() == "XInc") then
-		bar.x = bar.x + 1
-		self.display:FindChild("XVal"):SetText(bar.height)
-	elseif (wndHandler:GetName() == "HDec") then
 		bar.x = bar.x - 1
-		self.display:FindChild("XVal"):SetText(bar.height)
+		self.display:FindChild("XVal"):SetText(bar.x)
+	elseif (wndHandler:GetName() == "XDec") then
+		bar.x = bar.x + 1
+		self.display:FindChild("XVal"):SetText(bar.x)
 	elseif (wndHandler:GetName() == "YDec") then
-		bar.y = bar.y - 1
-		self.display:FindChild("YVal"):SetText(bar.height)
-	elseif (wndHandler:GetName() == "YInc") then
 		bar.y = bar.y + 1
-		self.display:FindChild("YVal"):SetText(bar.height)
+		self.display:FindChild("YVal"):SetText(bar.y)
+	elseif (wndHandler:GetName() == "YInc") then
+		bar.y = bar.y - 1
+		self.display:FindChild("YVal"):SetText(bar.y)
 	end
 end
 
@@ -352,8 +419,39 @@ function Serenity_HUD:OnMouseWheelMove( wndHandler, wndControl, nLastRelativeMou
 	elseif (wndHandler:GetName() == "HeightVal") then
 		bar.height = bar.height + 2 * math.floor(fScrollAmount)
 		self.display:FindChild("HeightVal"):SetText(bar.height)
+	elseif (wndHandler:GetName() == "XVal") then
+		bar.x = bar.x + 1 * -math.floor(fScrollAmount)
+		self.display:FindChild("XVal"):SetText(bar.x)
+	elseif (wndHandler:GetName() == "YVal") then
+		bar.y = bar.y + 1 * -math.floor(fScrollAmount)
+		self.display:FindChild("YVal"):SetText(bar.y)
 	end
 	return true
+end
+
+function Serenity_HUD:GetIndexOfBarItem(bar)
+	for i, v in pairs(self.barList) do
+		if v == bar then
+			return i
+		end
+	end
+	return 0
+end
+
+function Serenity_HUD:OnDeletePressed( wndHandler, wndControl, eMouseButton )
+	if self.listItem:GetData() then
+		table.remove(self.barList, self:GetIndexOfBarItem(self.listItem:GetData()))
+		self.listItem:GetData():Destroy()
+		self.listItem:SetData(nil)
+	end
+	self:ResetListItems()
+	self:resetDisplay()
+end
+
+function Serenity_HUD:OnCopyBarclicked( wndHandler, wndControl, eMouseButton )
+	if self.listItem:GetData() then
+		self:CreateNewBar(self:GenerateDetailsArray(self.listItem:GetData()))
+	end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -382,10 +480,10 @@ end
 
 function SHudBar:Init(parent, params)
 	self.par = parent;
-	self.name = "Bar" .. (#parent.barList + 1)
 	self.frame = Apollo.LoadForm(self.par.xmlDoc, "Bar", nil, self)
 	self.bar = self.frame:FindChild("BarTex")
 	self.text = self.frame:FindChild("Text")
+	self.name = "Bar" .. (#parent.barList + 1)
 	self.dataObject = barType["Player Health"]
 	self.texture = textures["Plain"]
 	self.fullColour = "ff00ff00"
@@ -398,7 +496,25 @@ function SHudBar:Init(parent, params)
 	self.text:Show(false)
 	
 	if params then
-		
+		self.name = params[1]
+		self.dataObject = barType[params[2]]
+		self.texture = textures[params[3]]
+		self.fullColour = params[4]
+		self.emptyColour = params[5]
+		self.width = params[6]
+		self.height = params[7]
+		self.x = params[8]
+		self.y = params[9]
+	else
+		self.name = "Bar" .. (#parent.barList + 1)
+		self.dataObject = barType["Player Health"]
+		self.texture = textures["Plain"]
+		self.fullColour = "ff00ff00"
+		self.emptyColour = "55ffffff"
+		self.width = 30
+		self.height = 100
+		self.x = 0
+		self.y = 0
 	end	
 end
 
@@ -411,6 +527,10 @@ function SHudBar:Refresh()
 	self.bar:SetProgress(self.dataObject.current())
 	
 	self.frame:SetAnchorOffsets(self.x - self.width/2, self.y - self.height/2, self.x + self.width/2, self.y + self.height/2)
+end
+
+function SHudBar:Destroy()
+	self.frame:Destroy()
 end
 
 function SHudBar:SetResource(type)
