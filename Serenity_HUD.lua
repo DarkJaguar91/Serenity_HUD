@@ -52,7 +52,7 @@ local barType = {
 			return GameLib.GetPlayerUnit():GetAbsorptionValue()
 	 	end,
 	},
-	["player Shield & Absorb"] = {
+	["Player Shield & Absorb"] = {
 		max = function()
 			return (GameLib.GetPlayerUnit():GetShieldCapacityMax() + GameLib.GetPlayerUnit():GetShieldCapacityMax())
 		end,
@@ -60,7 +60,7 @@ local barType = {
 			return (GameLib.GetPlayerUnit():GetShieldCapacity() + GameLib.GetPlayerUnit():GetShieldCapacity())
 	 	end,
 	},
-	["player 'Mana'"] = {
+	["Player 'Mana'"] = {
 		max = function()
 			return (GameLib.GetPlayerUnit():GetMaxMana())
 		end,
@@ -68,14 +68,30 @@ local barType = {
 			return (GameLib.GetPlayerUnit():GetMana())
 	 	end,
 	},
-	["player Resource (non stalker)"] = {
+	["Player Resource"] = {
 		max = function()
-			return (GameLib.GetPlayerUnit():GetMaxResource(1))
+			if GameLib.GetPlayerUnit():GetClassId() == GameLib.CodeEnumClass.Stalker then
+				return GameLib.GetPlayerUnit():GetMaxResource(4)
+			else
+				return (GameLib.GetPlayerUnit():GetMaxResource(1))
+			end
 		end,
-		current = function() 
-			return (GameLib.GetPlayerUnit():GetResource(1))
+		current = function()
+			if GameLib.GetPlayerUnit():GetClassId() == GameLib.CodeEnumClass.Stalker then
+				return GameLib.GetPlayerUnit():GetResource(4)
+			else 
+				return (GameLib.GetPlayerUnit():GetResource(1))
+			end
 	 	end,
 	},
+	["Player Sprint"] = {
+		max = function()
+			return (GameLib.GetPlayerUnit():GetMaxResource(0))
+		end,
+		current = function() 
+			return (GameLib.GetPlayerUnit():GetResource(0))
+	 	end,
+	},	
 	["Target Health"] = {
 		max = function()
 			if GameLib.GetTargetUnit() then
@@ -269,6 +285,7 @@ function Serenity_HUD:GenerateDetailsArray(bar)
 		bar.textCol,
 		bar.emptyHide,
 		bar.fullHide,
+		bar.textAsPercentage,
 	}
 end
 
@@ -348,7 +365,7 @@ function Serenity_HUD:OnInterfaceMenuListHasLoaded()
 end
 
 function Serenity_HUD:OnWindowManagementReady()
-	Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = Apollo.GetString("Serenity_UI")})
+	Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = "Serenity_HUD"})
 end
 
 
@@ -360,9 +377,17 @@ function Serenity_HUD:InitialiseBars()
 		end
 		savedBarData = nil
 	end
-
+	
 	if (#self.barList == 0) then
-	 	-- TODO gen defaults
+		-- player bars
+	 	self:CreateNewBar({"Player Health","Player Health","Water Horizontal","9a00ff00","80ffffff",20,170,-100,40,true,8,91,"ff25f200",false,false,false})
+		self:CreateNewBar({"Player Shield","Player Shield & Absorb","Water Verticle","9a00ffd9","80ffffff",20,150,-80,30,true,8,81,"ff00ffd9",false,false,false})
+		self:CreateNewBar({"Player 'Mana'","Player 'Mana'","Glass Waves","9aff00bc","80ffffff",20,170,-120,40,true,4,-92,"ffff00bc",false,true,false})
+		self:CreateNewBar({"Player Resource","Player Resource","Marble","9aff4d00","80ffffff",20,170,-140,40,true,-1,-92,"ffff4d00",false,true,false})
+		self:CreateNewBar({"Player Sprint","Player Sprint","Water Verticle","9affffff","667a6d6d",10,84,-65,-3,true,2,-48,"ffafafaf",false,true,true})
+		-- target bars
+		self:CreateNewBar({"Target Shield","Target Shield & Absorb","Water Horizontal","9a00ffd9","80ffffff",20,150,80,30,true,-8,81,"ff00ffd9",true,false,false})
+		self:CreateNewBar({"Target Health","Target Health","Water Horizontal","9a00ff00","80ffffff",20,170,100,40,true,1,91,"ff25f200",true,false,false})		
 	end
 end
 
@@ -465,6 +490,7 @@ function Serenity_HUD:resetDisplay()
 	
 	self.display:FindChild("EmptyHide"):SetCheck(currentBar.emptyHide)
 	self.display:FindChild("FullHide"):SetCheck(currentBar.fullHide)
+	self.display:FindChild("TextPercentage"):SetCheck(currentBar.textAsPercentage)
 
 	self.display:FindChild("ExampleBar"):SetEmptySprite(currentBar.texture)
 	self.display:FindChild("ExampleBar"):SetFullSprite(currentBar.texture)
@@ -639,6 +665,8 @@ function Serenity_HUD:OnTextShowChecked( wndHandler, wndControl, eMouseButton )
 		self.listItem:GetData().emptyHide = true
 	elseif (wndHandler:GetName() == "FullHide") then
 		self.listItem:GetData().fullHide = true
+	elseif (wndHandler:GetName() == "TextPercentage") then
+		self.listItem:GetData().textAsPercentage = true
 	end
 end
 
@@ -649,6 +677,8 @@ function Serenity_HUD:OnTextShowUnChecked( wndHandler, wndControl, eMouseButton 
 		self.listItem:GetData().emptyHide = false
 	elseif (wndHandler:GetName() == "FullHide") then
 		self.listItem:GetData().fullHide = false
+	elseif (wndHandler:GetName() == "TextPercentage") then
+		self.listItem:GetData().textAsPercentage = false
 	end
 end
 
@@ -722,6 +752,7 @@ function SHudBar:Init(parent, params)
 		self.textCol = params[13]
 		self.emptyHide = params[14]
 		self.fullHide = params[15]
+		self.textAsPercentage = params[16]
 	else
 		self.name = "Bar" .. (#parent.barList + 1)
 		self.dataObject = barType["Player Health"]
@@ -738,6 +769,7 @@ function SHudBar:Init(parent, params)
 		self.textCol = "ffffffff"
 		self.emptyHide = false
 		self.fullHide = false
+		self.textAsPercentage = false
 	end	
 end
 
@@ -750,7 +782,11 @@ function SHudBar:Refresh()
 	self.bar:SetProgress(self.dataObject.current())
 	self.text:Show(self.showText)
 	self.text:SetTextColor(self.textCol)
-	if self.dataObject.current() >= 1000 then
+	
+	if self.textAsPercentage then
+		local perc = self.dataObject.current() / self.dataObject.max() * 100
+		self.text:SetText(string.format("%.0f%%", perc))
+	elseif self.dataObject.current() >= 1000 then
 		self.text:SetText(string.format("%.1fK", self.dataObject.current()/1000))
 	else
 		self.text:SetText(string.format("%.0f", self.dataObject.current()))
