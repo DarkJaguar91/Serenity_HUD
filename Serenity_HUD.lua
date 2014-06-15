@@ -79,14 +79,22 @@ local barType = {
 	["Target Health"] = {
 		max = function()
 			if GameLib.GetTargetUnit() then
-				return (GameLib.GetTargetUnit():GetMaxHealth())
+				if GameLib.GetTargetUnit():GetMaxHealth() then
+					return (GameLib.GetTargetUnit():GetMaxHealth())
+				else
+					return 0
+				end
 			else
 				return 0
 			end
 		end,
 		current = function() 
 			if GameLib.GetTargetUnit() then
-				return (GameLib.GetTargetUnit():GetHealth())
+				if GameLib.GetTargetUnit():GetHealth() then
+					return (GameLib.GetTargetUnit():GetHealth())
+				else
+					return 0
+				end
 			else
 				return 0
 			end
@@ -95,14 +103,23 @@ local barType = {
 	["Target Shield"] = {
 		max = function()
 			if GameLib.GetTargetUnit() then
-				return (GameLib.GetTargetUnit():GetShieldCapacityMax())
+				if GameLib.GetTargetUnit():GetShieldCapacityMax() then
+					return (GameLib.GetTargetUnit():GetShieldCapacityMax())
+				else
+					return 0
+				end
+
 			else
 				return 0
 			end
 		end,
 		current = function() 
 			if GameLib.GetTargetUnit() then
-				return (GameLib.GetTargetUnit():GetShieldCapacity())
+				if GameLib.GetTargetUnit():GetShieldCapacity() then
+					return (GameLib.GetTargetUnit():GetShieldCapacity())
+				else
+					return 0
+				end
 			else
 				return 0
 			end
@@ -111,14 +128,23 @@ local barType = {
 	["Target Shield & Absorb"] = {
 		max = function()
 			if GameLib.GetTargetUnit() then
-				return (GameLib.GetTargetUnit():GetAbsorptionMax())
+				if GameLib.GetTargetUnit():GetAbsorptionMax() then
+					return (GameLib.GetTargetUnit():GetAbsorptionMax())
+				else
+					return 0
+				end
+
 			else
 				return 0
 			end
 		end,
 		current = function() 
 			if GameLib.GetTargetUnit() then
-				return (GameLib.GetTargetUnit():GetAbsorptionValue())
+				if GameLib.GetTargetUnit():GetAbsorptionValue() then
+					return (GameLib.GetTargetUnit():GetAbsorptionValue())
+				else
+					return 0
+				end
 			else
 				return 0
 			end
@@ -127,14 +153,22 @@ local barType = {
 	["Target Shield & Absorb"] = {
 		max = function()
 			if GameLib.GetTargetUnit() then
-				return (GameLib.GetTargetUnit():GetShieldCapacityMax() + GameLib.GetTargetUnit():GetAbsorptionMax())
+				if GameLib.GetTargetUnit():GetAbsorptionValue() then
+					return (GameLib.GetTargetUnit():GetShieldCapacityMax() + GameLib.GetTargetUnit():GetAbsorptionMax())
+				else
+					return 0
+				end
 			else
 				return 0
 			end
 		end,
 		current = function() 
 			if GameLib.GetTargetUnit() then
-				return (GameLib.GetTargetUnit():GetShieldCapacity() + GameLib.GetTargetUnit():GetAbsorptionValue())
+				if GameLib.GetTargetUnit():GetAbsorptionValue() then
+					return (GameLib.GetTargetUnit():GetShieldCapacity() + GameLib.GetTargetUnit():GetAbsorptionValue())
+				else
+					return 0
+				end
 			else
 				return 0
 			end
@@ -351,8 +385,10 @@ function Serenity_HUD:OnPreviewRefresh()
 end
 
 function Serenity_HUD:OnRefreshBars()
-	for i, v in pairs(self.barList) do
-		v:Refresh()
+	if GameLib.GetPlayerUnit() then
+		for i, v in pairs(self.barList) do
+			v:Refresh()
+		end
 	end
 end
 
