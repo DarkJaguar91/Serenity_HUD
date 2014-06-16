@@ -1,33 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Sprites>
-    <Sprite Name="CrackedGlass" Cycle="1">
-        <Frame Texture="Serenity_HUD\tex\glass.tga" x0="0" x1="0" x2="0" x3="0" x4="100" x5="100" y0="0" y1="0" y2="0" y3="0" y4="100" y5="100" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    <Sprite Name="CleanCurveLBG" Cycle="1">
+        <Frame Texture="Serenity_HUD-V1.2.1\tex\CleanCurvesBGLeft.tga" x0="173" x1="173" x2="173" x3="173" x4="244" x5="245" y0="5" y1="5" y2="5" y3="5" y4="508" y5="508" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
     </Sprite>
-    <Sprite Name="plain" Cycle="1">
-        <Frame Texture="Serenity_HUD\tex\plain.tga" x0="0" x1="0" x2="0" x3="2" x4="100" x5="102" y0="0" y1="0" y2="0" y3="2" y4="100" y5="102" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    <Sprite Name="CleanCurveL" Cycle="1">
+        <Frame Texture="Serenity_HUD-V1.2.1\tex\CleanCurvesLeft.tga" x0="173" x1="173" x2="173" x3="173" x4="245" x5="245" y0="5" y1="5" y2="5" y3="5" y4="508" y5="508" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
     </Sprite>
-    <Sprite Name="TemperedGlass" Cycle="1">
-        <Frame Texture="Serenity_HUD\tex\glass2.tga" x0="0" x1="0" x2="0" x3="0" x4="100" x5="100" y0="0" y1="0" y2="0" y3="0" y4="100" y5="100" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    <Sprite Name="CleanCurveRBG" Cycle="1">
+        <Frame Texture="Serenity_HUD-V1.2.1\tex\CleanCurvesBGRight.tga" x0="11" x1="11" x2="11" x3="11" x4="83" x5="83" y0="5" y1="5" y2="5" y3="5" y4="508" y5="508" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
     </Sprite>
-    <Sprite Name="Marble" Cycle="1">
-        <Frame Texture="Serenity_HUD\tex\glass3.tga" x0="0" x1="0" x2="0" x3="0" x4="100" x5="100" y0="0" y1="0" y2="0" y3="0" y4="100" y5="100" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
-    </Sprite>
-    <Sprite Name="ScratchedGlass" Cycle="1">
-        <Frame Texture="Serenity_HUD\tex\glass4.tga" x0="0" x1="0" x2="0" x3="0" x4="100" x5="100" y0="0" y1="0" y2="0" y3="0" y4="100" y5="100" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
-    </Sprite>
-    <Sprite Name="GlassWaives" Cycle="1">
-        <Frame Texture="Serenity_HUD\tex\glass5.tga" x0="0" x1="0" x2="0" x3="0" x4="100" x5="100" y0="0" y1="0" y2="0" y3="0" y4="100" y5="100" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
-    </Sprite>
-    <Sprite Name="Flames" Cycle="1">
-        <Frame Texture="Serenity_HUD\tex\glass6.tga" x0="0" x1="0" x2="0" x3="0" x4="100" x5="100" y0="0" y1="0" y2="0" y3="0" y4="100" y5="100" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
-    </Sprite>
-    <Sprite Name="Ice" Cycle="1">
-        <Frame Texture="Serenity_HUD\tex\ice.tga" x0="0" x1="0" x2="0" x3="0" x4="100" x5="100" y0="0" y1="0" y2="0" y3="0" y4="100" y5="100" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
-    </Sprite>
-    <Sprite Name="Water" Cycle="1">
-        <Frame Texture="Serenity_HUD\tex\water.tga" x0="0" x1="0" x2="0" x3="0" x4="100" x5="100" y0="0" y1="0" y2="0" y3="0" y4="100" y5="100" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
-    </Sprite>
-    <Sprite Name="HorizontalWater" Cycle="1">
-        <Frame Texture="Serenity_HUD\tex\water2.tga" x0="0" x1="0" x2="0" x3="0" x4="100" x5="100" y0="0" y1="0" y2="0" y3="0" y4="100" y5="100" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    <Sprite Name="CleanCurveR" Cycle="1">
+        <Frame Texture="Serenity_HUD-V1.2.1\tex\CleanCurvesRight.tga" x0="11" x1="11" x2="11" x3="11" x4="83" x5="83" y0="5" y1="5" y2="5" y3="5" y4="508" y5="508" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
     </Sprite>
 </Sprites>

@@ -10,21 +10,13 @@ require "Window"
 -----------------------------------------------------------------------------------------------
 local Serenity_HUD = {} 
 local SHudBar = {}
- 
 -----------------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------------
+local version = "V1.3"
 local textures = {
-	["Plain"] = "SHUD:plain",
-	["Cracked Glass"] = "SHUD:CrackedGlass",
-	["Tempered Glass"] = "SHUD:TemperedGlass",
-	["Marble"] = "SHUD:Marble",
-	["Scratched Glass"] = "SHUD:ScratchedGlass",
-	["Glass Waves"] = "SHUD:GlassWaives",
-	["Flames"] = "SHUD:Flames",
-	["Ice"] = "SHUD:Ice",
-	["Water Verticle"] = "SHUD:Water",
-	["Water Horizontal"] = "SHUD:HorizontalWater",
+	["Clean Curve Left"] = "SHUD:CleanCurveL",
+	["Clean Curve Right"] = "SHUD:CleanCurveR"
 }
 
 local barType = {
@@ -204,6 +196,20 @@ local function StringToColor(s)
 	return CColor.new(r / 255, g / 255, b / 255, a / 255)
 end
 
+local function pairsByKeys (t, f)
+	local a = {}
+	for n in pairs(t) do table.insert(a, n) end
+		table.sort(a, f)
+		local i = 0      -- iterator variable
+		local iter = function ()   -- iterator function
+		i = i + 1
+		if a[i] == nil then return nil
+		else return a[i], t[a[i]]
+		end
+	end
+	return iter
+end
+
 local savedBarData = nil
 
 -----------------------------------------------------------------------------------------------
@@ -238,6 +244,7 @@ function Serenity_HUD:OnSave(eType)
 	local tSavedData = {}
 
 	tSavedData.savedBars = self:GetSavedBarList()
+	tSavedData.version = version
 	
 	return tSavedData
 end
@@ -247,9 +254,9 @@ function Serenity_HUD:OnRestore(eType, tSavedData)
 		return
 	end
 	
-	Print("Serenity_bags")
-	
 	if tSavedData ~= nil then
+		if tSavedData.version ~= version then return end
+		
 		savedBarData = tSavedData.savedBars
 	end
 end
@@ -270,22 +277,22 @@ end
 
 function Serenity_HUD:GenerateDetailsArray(bar)
 	return {
-		bar.name,
-		self:GetBarTypeNameFromObject(bar.dataObject),
-		self:GetTextureNameFromTextureValue(bar.texture),
-		bar.fullColour,
-		bar.emptyColour,
-		bar.width,
-		bar.height,
-		bar.x,
-		bar.y,
-		bar.showText,
-		bar.textX,
-		bar.textY,
-		bar.textCol,
-		bar.emptyHide,
-		bar.fullHide,
-		bar.textAsPercentage,
+		bar.name, -- 1
+		self:GetBarTypeNameFromObject(bar.dataObject), -- 2
+		self:GetTextureNameFromTextureValue(bar.texture), -- 3
+		bar.fullColour, -- 4
+		bar.emptyColour, -- 5
+		bar.emptyHide, -- 6
+		bar.fullHide, -- 7
+		bar.width, -- 8
+		bar.height, -- 9
+		bar.x, -- 10
+		bar.y, -- 11
+		bar.showText, -- 12
+		bar.textX, -- 13
+		bar.textY, -- 14
+		bar.textCol, -- 15
+		bar.textAsPercentage, -- 16
 	}
 end
 
@@ -323,15 +330,20 @@ function Serenity_HUD:OnDocLoaded()
 	
 		-- combo boxes
 		local types = self.wndMain:FindChild("Resources")
-		types:DeleteAll()
-		for i, v in pairs(barType) do
-			types:AddItem(i)
+		types:DestroyChildren()
+		for i, v in pairsByKeys(barType) do
+			local item = Apollo.LoadForm(self.xmlDoc, "DetailListItem", types, self)
+			item:FindChild("DetailName"):SetText(i)
 		end
+		types:ArrangeChildrenVert()
 		local texts = self.wndMain:FindChild("Textures")
-		texts:DeleteAll()
-		for i, v in pairs(textures) do
-			texts:AddItem(i)
+		texts:DestroyChildren()
+		for i, v in pairsByKeys(textures) do
+			local item = Apollo.LoadForm(self.xmlDoc, "DetailListItem", texts, self)
+			item:FindChild("DetailName"):SetText(i)
 		end
+		texts:ArrangeChildrenVert()
+
 		
 		self:InitialiseBars()
 
@@ -380,14 +392,14 @@ function Serenity_HUD:InitialiseBars()
 	
 	if (#self.barList == 0) then
 		-- player bars
-	 	self:CreateNewBar({"Player Health","Player Health","Water Horizontal","9a00ff00","80ffffff",20,170,-100,40,true,8,91,"ff25f200",false,false,false})
-		self:CreateNewBar({"Player Shield","Player Shield & Absorb","Water Verticle","9a00ffd9","80ffffff",20,150,-80,30,true,8,81,"ff00ffd9",false,false,false})
-		self:CreateNewBar({"Player 'Mana'","Player 'Mana'","Glass Waves","9aff00bc","80ffffff",20,170,-120,40,true,4,-92,"ffff00bc",false,true,false})
-		self:CreateNewBar({"Player Resource","Player Resource","Marble","9aff4d00","80ffffff",20,170,-140,40,true,-1,-92,"ffff4d00",false,true,false})
-		self:CreateNewBar({"Player Sprint","Player Sprint","Water Verticle","9affffff","667a6d6d",10,84,-65,-3,true,2,-48,"ffafafaf",false,true,true})
+	 	self:CreateNewBar({"Player Health","Player Health","Clean Curve Left","9a00ff00","80ffffff",false,false,20,170,-100,40,true,8,91,"ff25f200",false})
+		self:CreateNewBar({"Player Shield","Player Shield & Absorb","Clean Curve Left","9a00ffd9","80ffffff",false,false,20,150,-80,30,true,8,81,"ff00ffd9",false})
+		self:CreateNewBar({"Player 'Mana'","Player 'Mana'","Clean Curve Left","9aff00bc","80ffffff",false,true,20,170,-120,40,true,4,-92,"ffff00bc",false})
+		self:CreateNewBar({"Player Resource","Player Resource","Clean Curve Left","9aff4d00","80ffffff",false,true,20,170,-140,40,true,-1,-92,"ffff4d00",false})
+		self:CreateNewBar({"Player Sprint","Player Sprint","Clean Curve Left","9affffff","667a6d6d",false,true,10,84,-65,-3,true,2,-48,"ffafafaf",true})
 		-- target bars
-		self:CreateNewBar({"Target Shield","Target Shield & Absorb","Water Horizontal","9a00ffd9","80ffffff",20,150,80,30,true,-8,81,"ff00ffd9",true,false,false})
-		self:CreateNewBar({"Target Health","Target Health","Water Horizontal","9a00ff00","80ffffff",20,170,100,40,true,1,91,"ff25f200",true,false,false})		
+		self:CreateNewBar({"Target Shield","Target Shield & Absorb","Clean Curve Right","9a00ffd9","80ffffff",true,false,20,150,80,30,true,-8,81,"ff00ffd9",false})
+		self:CreateNewBar({"Target Health","Target Health","Clean Curve Right","9a00ff00","80ffffff",true,false,20,170,100,40,true,1,91,"ff25f200",false})		
 	end
 end
 
@@ -460,7 +472,7 @@ function Serenity_HUD:ResetListItems()
 		bar:SetData(v)
 		bar:FindChild("BarName"):SetText(v.name)
 		if v == self.listItem:GetData() then
-			bar:SetBGColor(ApolloColor.new("ff5555ff"))
+			bar:SetBGColor(ApolloColor.new("ff00ff00"))
 		end
 	end
 	
@@ -472,9 +484,7 @@ function Serenity_HUD:resetDisplay()
 	if currentBar == nil then self.display:Show(false) return end
 	self.display:Show(true)
 	self.display:FindChild("EditName"):SetText(currentBar.name)
-	self.display:FindChild("Resources"):SelectItemByText(self:GetBarTypeNameFromObject(currentBar.dataObject))
-	self.display:FindChild("Textures"):SelectItemByText(self:GetTextureNameFromTextureValue(currentBar.texture))
-	
+		
 	self.display:FindChild("FullColour"):SetBGColor(ApolloColor.new(currentBar.fullColour))
 	self.display:FindChild("EmptyColour"):SetBGColor(ApolloColor.new(currentBar.emptyColour))
 	
@@ -492,14 +502,28 @@ function Serenity_HUD:resetDisplay()
 	self.display:FindChild("FullHide"):SetCheck(currentBar.fullHide)
 	self.display:FindChild("TextPercentage"):SetCheck(currentBar.textAsPercentage)
 
-	self.display:FindChild("ExampleBar"):SetEmptySprite(currentBar.texture)
+	self.display:FindChild("ExampleBar"):SetEmptySprite(currentBar.texture.."BG")
 	self.display:FindChild("ExampleBar"):SetFullSprite(currentBar.texture)
 	self.display:FindChild("ExampleBar"):SetBarColor(currentBar.fullColour)
 	self.display:FindChild("ExampleBar"):SetBGColor(currentBar.emptyColour)	
-end
-
-function Serenity_HUD:ResourceChanged( wndHandler, wndControl )
-	self.listItem:GetData():SetResource(wndHandler:GetSelectedText())
+	
+	self.display:FindChild("ResourceLbl"):SetText("Resource: " .. self:GetBarTypeNameFromObject(currentBar.dataObject))
+	for i, v in pairs(self.display:FindChild("Resources"):GetChildren()) do
+		if v:FindChild("DetailName"):GetText() == self:GetBarTypeNameFromObject(currentBar.dataObject) then
+			v:SetBGColor("ff00ff00")
+		else
+			v:SetBGColor("ffffffff")
+		end
+	end
+	
+	self.display:FindChild("TextureLbl"):SetText("Texture: " .. self:GetTextureNameFromTextureValue(currentBar.texture))
+	for i, v in pairs(self.display:FindChild("Textures"):GetChildren()) do
+		if v:FindChild("DetailName"):GetText() == self:GetTextureNameFromTextureValue(currentBar.texture) then
+			v:SetBGColor("ff00ff00")
+		else
+			v:SetBGColor("ffffffff")
+		end
+	end
 end
 
 function Serenity_HUD:GetBarTypeNameFromObject(object)
@@ -523,11 +547,6 @@ end
 function Serenity_HUD:UserChangedBarName( wndHandler, wndControl, strText )
 	self.listItem:GetData():SetName(wndHandler:GetText())
 	self:ResetListItems()
-end
-
-function Serenity_HUD:OnTextureChosen( wndHandler, wndControl )
-	self.listItem:GetData():SetTexture(wndHandler:GetSelectedText())
-	self:resetDisplay()
 end
 
 function Serenity_HUD:LaunchColorPicker(element)
@@ -716,6 +735,17 @@ function Serenity_HUD:OnBarListItemClick( wndHandler, wndControl, eMouseButton, 
 	self:resetDisplay()
 end
 
+function Serenity_HUD:DetailListItemClick( wndHandler, wndControl, eMouseButton, nLastRelativeMouseX, nLastRelativeMouseY )
+	local bar = self.listItem:GetData()
+	if (wndHandler:GetParent():GetName() == "Resources") then
+		bar:SetResource(wndHandler:FindChild("DetailName"):GetText())
+	elseif (wndHandler:GetParent():GetName() == "Textures") then
+		bar:SetTexture(wndHandler:FindChild("DetailName"):GetText())
+	end
+	self:ResetListItems()
+	self:resetDisplay()
+end
+
 -----------------------------------------------------------------------------------------------
 -- SHUD bar
 -----------------------------------------------------------------------------------------------
@@ -742,23 +772,25 @@ function SHudBar:Init(parent, params)
 		self.texture = textures[params[3]]
 		self.fullColour = params[4]
 		self.emptyColour = params[5]
-		self.width = params[6]
-		self.height = params[7]
-		self.x = params[8]
-		self.y = params[9]
-		self.showText = params[10]
-		self.textX = params[11]
-		self.textY = params[12]
-		self.textCol = params[13]
-		self.emptyHide = params[14]
-		self.fullHide = params[15]
+		self.emptyHide = params[6]
+		self.fullHide = params[7]
+		self.width = params[8]
+		self.height = params[9]
+		self.x = params[10]
+		self.y = params[11]
+		self.showText = params[12]
+		self.textX = params[13]
+		self.textY = params[14]
+		self.textCol = params[15]
 		self.textAsPercentage = params[16]
 	else
 		self.name = "Bar" .. (#parent.barList + 1)
 		self.dataObject = barType["Player Health"]
-		self.texture = textures["Plain"]
+		self.texture = textures["Clean Curve Left"]
 		self.fullColour = "ff00ff00"
 		self.emptyColour = "55ffffff"
+		self.emptyHide = false
+		self.fullHide = false
 		self.width = 30
 		self.height = 100
 		self.x = 0
@@ -767,14 +799,12 @@ function SHudBar:Init(parent, params)
 		self.textX = 0
 		self.textY = 0
 		self.textCol = "ffffffff"
-		self.emptyHide = false
-		self.fullHide = false
 		self.textAsPercentage = false
 	end	
 end
 
 function SHudBar:Refresh()
-	self.bar:SetEmptySprite(self.texture)
+	self.bar:SetEmptySprite(self.texture .. "BG")
 	self.bar:SetFullSprite(self.texture)
 	self.bar:SetBGColor(ApolloColor.new(self.emptyColour))
 	self.bar:SetBarColor(ApolloColor.new(self.fullColour))
