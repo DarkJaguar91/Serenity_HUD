@@ -13,7 +13,7 @@ local SHudBar = {}
 -----------------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------------
-local version = "V1.3"
+local version = "V1.6"
 local textures = {
 	["Comity Vertical"] = "SHUD:ComityV",
 	["Comity Horizontal"] = "SHUD:ComityH",
@@ -466,7 +466,7 @@ function Serenity_HUD:OnInterfaceMenuListHasLoaded()
 end
 
 function Serenity_HUD:OnWindowManagementReady()
-	--Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = "Serenity_HUD"})
+	Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = "Serenity_HUDV1.6"})
 end
 
 function Serenity_HUD:CreateBarsFromList(list)
