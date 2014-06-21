@@ -21,6 +21,16 @@ local textures = {
 	["Arc Hud Right"] = "SHUD:ArcHudRight",
 	["Arc Hud Top"] = "SHUD:ArcHudTop",
 	["Arc Hud Bot"] = "SHUD:ArcHudBot",
+	["Courtesy Horizontal"] = "SHUD:CourtesyH",
+	["Courtesy Vertical"] = "SHUD:CourtesyV",
+	["Ferous Scratch Vertical"] = "SHUD:FerousScratchV",
+	["Ferous Scratch Horizontal"] = "SHUD:FerousScratchH",
+	["Barbed Wire Horizontal"] = "SHUD:BarbedWireH",
+	["Barbed Wire Vertical"] = "SHUD:BarbedWireV",
+	["Left Dragon Vertical"] = "SHUD:LDragonV",
+	["Left Dragon Horizontal"] = "SHUD:LDragonH",
+	["Right Dragon Vertical"] = "SHUD:RDragonV",
+	["Right Dragon Horizontal"] = "SHUD:RDragonH",
 }
 
 local BGTextures = {
@@ -63,10 +73,10 @@ local barType = {
 	},
 	["Player Shield & Absorb"] = {
 		max = function()
-			return (GameLib.GetPlayerUnit():GetShieldCapacityMax() + GameLib.GetPlayerUnit():GetShieldCapacityMax())
+			return (GameLib.GetPlayerUnit():GetShieldCapacityMax() + GameLib.GetPlayerUnit():GetAbsorptionMax())
 		end,
 		current = function() 
-			return (GameLib.GetPlayerUnit():GetShieldCapacity() + GameLib.GetPlayerUnit():GetShieldCapacity())
+			return (GameLib.GetPlayerUnit():GetShieldCapacity() + GameLib.GetPlayerUnit():GetAbsorptionValue())
 	 	end,
 	},
 	["Player 'Mana'"] = {
@@ -413,7 +423,7 @@ function Serenity_HUD:InitialiseBars()
 	if (savedBarData) then
 		self.barList = {}
 		for i, v in pairs(savedBarData) do
-			--self:CreateNewBar(v)
+			self:CreateNewBar(v)
 		end
 		savedBarData = nil
 	end
