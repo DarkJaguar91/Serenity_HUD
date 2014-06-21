@@ -211,6 +211,14 @@ local barType = {
 	},	
 }
 
+local archudtheme = {{textY=77,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=-6,height=150,showText=true,textCol="ff02ff00",borderWidth=0,width=75,y=35,x=-65,name="Health",fullColour="ff3cff23",orientation="vertical",barType="Player Health",fullHide=false,emptyHide=false},
+					 {textY=60,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=26,height=150,showText=true,textCol="ff23fff8",borderWidth=0,width=75,y=35,x=-55,name="Shield",fullColour="ff23ffee",orientation="vertical",barType="Player Shield & Absorb",fullHide=false,emptyHide=true},
+					 {textY=-83,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=18,height=150,showText=true,textCol="ffff23f2",borderWidth=0,width=75,y=35,x=-75,name="Mana",fullColour="ffff23f2",orientation="vertical",barType="Player 'Mana'",fullHide=true,emptyHide=false},
+					 {textY=0,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=-45,height=150,showText=true,textCol="ffff8223",borderWidth=0,width=75,y=35,x=-85,name="Resource",fullColour="ffff8223",orientation="vertical",barType="Player Resource",fullHide=true,emptyHide=true},
+					 {textY=-28,BGTexture="Arc Hud Top",textAsPercentage=true,emptyColour="ff606060",texture="Arc Hud Top",textX=0,height=40,showText=true,textCol="ffffffff",borderWidth=0,width=132,y=-20,x=0,name="Sprint",fullColour="ffffffff",orientation="horizontal",barType="Player Sprint",fullHide=true,emptyHide=false},
+ 					 {textY=77,BGTexture="Arc Hud Right",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Right",textX=0,height=150,showText=true,textCol="ff02ff00",borderWidth=0,width=75,y=35,x=65,name="Target Health",fullColour="ff3cff23",orientation="vertical",barType="Target Health",fullHide=false,emptyHide=true},
+					 {textY=60,BGTexture="Arc Hud Right",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Right",textX=-24,height=150,showText=true,textCol="ff23fff8",borderWidth=0,width=75,y=35,x=55,name="Target Shield",fullColour="ff23ffee",orientation="vertical",barType="Target Shield & Absorb",fullHide=false,emptyHide=true},}
+
 local function ColorToString(c)
 	return string.format("%02x%02x%02x%02x", math.floor(c.a * 255 + 0.5), math.floor(c.r * 255 + 0.5), math.floor(c.g * 255 + 0.5), math.floor(c.b * 255 + 0.5))
 end
@@ -418,17 +426,21 @@ function Serenity_HUD:OnWindowManagementReady()
 	--Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = "Serenity_HUD"})
 end
 
+function Serenity_HUD:CreateBarsFromList(list)
+	self.barList = {}
+	for i, v in pairs(list) do
+		self:CreateNewBar(v)
+	end
+end
 
 function Serenity_HUD:InitialiseBars()
 	if (savedBarData) then
-		self.barList = {}
-		for i, v in pairs(savedBarData) do
-			self:CreateNewBar(v)
-		end
+		self:CreateBarsFromList(savedBarData)
 		savedBarData = nil
 	end
 	
 	if (#self.barList == 0) then
+		self:CreateBarsFromList(archudtheme)
 	end
 end
 
