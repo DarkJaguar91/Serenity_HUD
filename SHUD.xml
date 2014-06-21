@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Sprites>
-    <Sprite Name="CleanCurveLBG" Cycle="1">
-        <Frame Texture="Serenity_HUD-V1.2.1\tex\CleanCurvesBGLeft.tga" x0="173" x1="173" x2="173" x3="173" x4="244" x5="245" y0="5" y1="5" y2="5" y3="5" y4="508" y5="508" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    <Sprite Name="ComityH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\ComityH.tga" x0="0" x1="0" x2="0" x3="2" x4="254" x5="256" y0="0" y1="2" y2="2" y3="2" y4="30" y5="32" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
     </Sprite>
-    <Sprite Name="CleanCurveL" Cycle="1">
-        <Frame Texture="Serenity_HUD-V1.2.1\tex\CleanCurvesLeft.tga" x0="173" x1="173" x2="173" x3="173" x4="245" x5="245" y0="5" y1="5" y2="5" y3="5" y4="508" y5="508" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    <Sprite Name="ComityV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\ComityV.tga" x0="0" x1="0" x2="0" x3="2" x4="30" x5="32" y0="0" y1="0" y2="0" y3="2" y4="254" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
     </Sprite>
-    <Sprite Name="CleanCurveRBG" Cycle="1">
-        <Frame Texture="Serenity_HUD-V1.2.1\tex\CleanCurvesBGRight.tga" x0="11" x1="11" x2="11" x3="11" x4="83" x5="83" y0="5" y1="5" y2="5" y3="5" y4="508" y5="508" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    <Sprite Name="GlossBG" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\glossBG.tga" x0="0" x1="0" x2="0" x3="5" x4="55" x5="60" y0="0" y1="0" y2="0" y3="5" y4="55" y5="60" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
     </Sprite>
-    <Sprite Name="CleanCurveR" Cycle="1">
-        <Frame Texture="Serenity_HUD-V1.2.1\tex\CleanCurvesRight.tga" x0="11" x1="11" x2="11" x3="11" x4="83" x5="83" y0="5" y1="5" y2="5" y3="5" y4="508" y5="508" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    <Sprite Name="ArcHudLeft" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\ArcHUDLeft.tga" x0="0" x1="0" x2="0" x3="0" x4="254" x5="254" y0="0" y1="0" y2="0" y3="0" y4="503" y5="503" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ArcHudRight" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\ArcHUDRight.tga" x0="0" x1="0" x2="0" x3="0" x4="254" x5="254" y0="0" y1="0" y2="0" y3="0" y4="503" y5="503" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ArcHudTop" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\ArcHUDTop.tga" x0="0" x1="0" x2="0" x3="0" x4="503" x5="503" y0="0" y1="0" y2="0" y3="0" y4="254" y5="254" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ArcHudBot" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\ArcHUDBot.tga" x0="0" x1="0" x2="0" x3="0" x4="503" x5="503" y0="0" y1="0" y2="0" y3="0" y4="254" y5="254" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
     </Sprite>
 </Sprites>

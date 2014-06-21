@@ -15,8 +15,25 @@ local SHudBar = {}
 -----------------------------------------------------------------------------------------------
 local version = "V1.3"
 local textures = {
-	["Clean Curve Left"] = "SHUD:CleanCurveL",
-	["Clean Curve Right"] = "SHUD:CleanCurveR"
+	["Comity Vertical"] = "SHUD:ComityV",
+	["Comity Horizontal"] = "SHUD:ComityH",
+	["Arc Hud Left"] = "SHUD:ArcHudLeft",
+	["Arc Hud Right"] = "SHUD:ArcHudRight",
+	["Arc Hud Top"] = "SHUD:ArcHudTop",
+	["Arc Hud Bot"] = "SHUD:ArcHudBot",
+}
+
+local BGTextures = {
+	["Gloss"] = "SHUD:GlossBG",
+	["Arc Hud Left"] = "SHUD:ArcHudLeft",
+	["Arc Hud Right"] = "SHUD:ArcHudRight",
+	["Arc Hud Top"] = "SHUD:ArcHudTop",
+	["Arc Hud Bot"] = "SHUD:ArcHudBot",
+}
+
+local orientation = {
+	vertical = "vertical",
+	horizontal = "horizontal",
 }
 
 local barType = {
@@ -277,22 +294,25 @@ end
 
 function Serenity_HUD:GenerateDetailsArray(bar)
 	return {
-		bar.name, -- 1
-		self:GetBarTypeNameFromObject(bar.dataObject), -- 2
-		self:GetTextureNameFromTextureValue(bar.texture), -- 3
-		bar.fullColour, -- 4
-		bar.emptyColour, -- 5
-		bar.emptyHide, -- 6
-		bar.fullHide, -- 7
-		bar.width, -- 8
-		bar.height, -- 9
-		bar.x, -- 10
-		bar.y, -- 11
-		bar.showText, -- 12
-		bar.textX, -- 13
-		bar.textY, -- 14
-		bar.textCol, -- 15
-		bar.textAsPercentage, -- 16
+		name = bar.name, -- 1
+		barType = self:GetBarTypeNameFromObject(bar.dataObject), -- 2
+		texture = self:GetTextureNameFromTextureValue(bar.texture), -- 3
+		BGTexture = self:GetTextureNameFromBGTextureValue(bar.BGTexture),
+		fullColour = bar.fullColour, -- 4
+		emptyColour = bar.emptyColour, -- 5
+		orientation = bar.orientation,
+		emptyHide = bar.emptyHide, -- 6
+		fullHide = bar.fullHide, -- 7
+		width = bar.width, -- 8
+		height = bar.height, -- 9
+		x = bar.x, -- 10
+		y = bar.y, -- 11
+		borderWidth = bar.borderWidth,
+		showText = bar.showText, -- 12
+		textX = bar.textX, -- 13
+		textY = bar.textY, -- 14
+		textCol = bar.textCol, -- 15
+		textAsPercentage = bar.textAsPercentage, -- 16
 	}
 end
 
@@ -343,6 +363,14 @@ function Serenity_HUD:OnDocLoaded()
 			item:FindChild("DetailName"):SetText(i)
 		end
 		texts:ArrangeChildrenVert()
+		local bgTexts = self.wndMain:FindChild("BGTextures")
+		bgTexts:DestroyChildren()
+		for i, v in pairsByKeys(BGTextures) do
+			local item = Apollo.LoadForm(self.xmlDoc, "DetailListItem", bgTexts, self)
+			item:FindChild("DetailName"):SetText(i)
+		end
+		bgTexts:ArrangeChildrenVert()
+
 
 		
 		self:InitialiseBars()
@@ -377,7 +405,7 @@ function Serenity_HUD:OnInterfaceMenuListHasLoaded()
 end
 
 function Serenity_HUD:OnWindowManagementReady()
-	Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = "Serenity_HUD"})
+	--Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = "Serenity_HUD"})
 end
 
 
@@ -385,21 +413,12 @@ function Serenity_HUD:InitialiseBars()
 	if (savedBarData) then
 		self.barList = {}
 		for i, v in pairs(savedBarData) do
-			self:CreateNewBar(v)
+			--self:CreateNewBar(v)
 		end
 		savedBarData = nil
 	end
 	
 	if (#self.barList == 0) then
-		-- player bars
-	 	self:CreateNewBar({"Player Health","Player Health","Clean Curve Left","9a00ff00","80ffffff",false,false,20,170,-100,40,true,8,91,"ff25f200",false})
-		self:CreateNewBar({"Player Shield","Player Shield & Absorb","Clean Curve Left","9a00ffd9","80ffffff",false,false,20,150,-80,30,true,8,81,"ff00ffd9",false})
-		self:CreateNewBar({"Player 'Mana'","Player 'Mana'","Clean Curve Left","9aff00bc","80ffffff",false,true,20,170,-120,40,true,4,-92,"ffff00bc",false})
-		self:CreateNewBar({"Player Resource","Player Resource","Clean Curve Left","9aff4d00","80ffffff",false,true,20,170,-140,40,true,-1,-92,"ffff4d00",false})
-		self:CreateNewBar({"Player Sprint","Player Sprint","Clean Curve Left","9affffff","667a6d6d",false,true,10,84,-65,-3,true,2,-48,"ffafafaf",true})
-		-- target bars
-		self:CreateNewBar({"Target Shield","Target Shield & Absorb","Clean Curve Right","9a00ffd9","80ffffff",true,false,20,150,80,30,true,-8,81,"ff00ffd9",false})
-		self:CreateNewBar({"Target Health","Target Health","Clean Curve Right","9a00ff00","80ffffff",true,false,20,170,100,40,true,1,91,"ff25f200",false})		
 	end
 end
 
@@ -501,12 +520,23 @@ function Serenity_HUD:resetDisplay()
 	self.display:FindChild("EmptyHide"):SetCheck(currentBar.emptyHide)
 	self.display:FindChild("FullHide"):SetCheck(currentBar.fullHide)
 	self.display:FindChild("TextPercentage"):SetCheck(currentBar.textAsPercentage)
-
-	self.display:FindChild("ExampleBar"):SetEmptySprite(currentBar.texture.."BG")
-	self.display:FindChild("ExampleBar"):SetFullSprite(currentBar.texture)
-	self.display:FindChild("ExampleBar"):SetBarColor(currentBar.fullColour)
-	self.display:FindChild("ExampleBar"):SetBGColor(currentBar.emptyColour)	
+	self.display:FindChild("BorderWidthVal"):SetText(currentBar.borderWidth)	
 	
+	self.display:FindChild("ExampleBar"):SetEmptySprite("")
+	self.display:FindChild("TexSprite"):SetSprite(currentBar.BGTexture)
+	self.display:FindChild("ExampleBar"):SetFullSprite(currentBar.texture)
+	self.display:FindChild("ExampleBar"):SetFullSprite(currentBar.texture)
+	if currentBar.orientation == orientation.horizontal then
+		self.display:FindChild("ExampleBar"):SetStyleEx("VerticallyAligned", false)
+		self.display:FindChild("ExampleBar"):SetStyleEx("BRtoLT", false)
+	else
+		self.display:FindChild("ExampleBar"):SetStyleEx("VerticallyAligned", true)
+		self.display:FindChild("ExampleBar"):SetStyleEx("BRtoLT", true)
+	end
+	self.display:FindChild("ExampleBar"):SetBarColor(currentBar.fullColour)
+	self.display:FindChild("TexSprite"):SetBGColor(currentBar.emptyColour)
+	self.display:FindChild("ExampleBar"):SetAnchorOffsets(currentBar.borderWidth, currentBar.borderWidth, -currentBar.borderWidth, -currentBar.borderWidth)
+
 	self.display:FindChild("ResourceLbl"):SetText("Resource: " .. self:GetBarTypeNameFromObject(currentBar.dataObject))
 	for i, v in pairs(self.display:FindChild("Resources"):GetChildren()) do
 		if v:FindChild("DetailName"):GetText() == self:GetBarTypeNameFromObject(currentBar.dataObject) then
@@ -524,11 +554,29 @@ function Serenity_HUD:resetDisplay()
 			v:SetBGColor("ffffffff")
 		end
 	end
+	
+	self.display:FindChild("BGTextureLbl"):SetText("Border: " .. self:GetTextureNameFromBGTextureValue(currentBar.BGTexture))
+	for i, v in pairs(self.display:FindChild("BGTextures"):GetChildren()) do
+		if v:FindChild("DetailName"):GetText() == self:GetTextureNameFromBGTextureValue(currentBar.BGTexture) then
+			v:SetBGColor("ff00ff00")
+		else
+			v:SetBGColor("ffffffff")
+		end
+	end
 end
 
 function Serenity_HUD:GetBarTypeNameFromObject(object)
 	for i, v in pairs(barType) do
 		if v == object then
+			return i
+		end
+	end
+	return nil
+end
+
+function Serenity_HUD:GetTextureNameFromBGTextureValue(value)
+	for i, v in pairs(BGTextures) do
+		if v == value then
 			return i
 		end
 	end
@@ -543,6 +591,7 @@ function Serenity_HUD:GetTextureNameFromTextureValue(value)
 	end
 	return nil
 end
+
 
 function Serenity_HUD:UserChangedBarName( wndHandler, wndControl, strText )
 	self.listItem:GetData():SetName(wndHandler:GetText())
@@ -575,7 +624,7 @@ function Serenity_HUD:OnColorUpdate()
 			SHUDOBJ.display:FindChild("ExampleBar"):SetBarColor(ColorToString(colorPickerColor))
 		elseif (colorPickerSetting == "EmptyColour") then
 			SHUDOBJ.listItem:GetData().emptyColour = ColorToString(colorPickerColor)
-			SHUDOBJ.display:FindChild("ExampleBar"):SetBGColor(ColorToString(colorPickerColor))
+			SHUDOBJ.display:FindChild("TexSprite"):SetBGColor(ColorToString(colorPickerColor))
 		elseif (colorPickerSetting == "TextColour") then
 			SHUDOBJ.listItem:GetData().textCol = ColorToString(colorPickerColor)
 		end
@@ -621,6 +670,14 @@ function Serenity_HUD:OnValChangeButtonDown( wndHandler, wndControl, eMouseButto
 	elseif (wndHandler:GetName() == "TXDec") then
 		bar.textX = bar.textX + 1
 		self.display:FindChild("TXVal"):SetText(bar.textX)
+	elseif (wndHandler:GetName() == "BWInc") then
+		bar.borderWidth = bar.borderWidth - 1
+		self.display:FindChild("BorderWidthVal"):SetText(bar.borderWidth)
+		self:resetDisplay()
+	elseif (wndHandler:GetName() == "BWDec") then
+		bar.borderWidth = bar.borderWidth + 1
+		self.display:FindChild("BorderWidthVal"):SetText(bar.borderWidth)
+		self:resetDisplay()
 	end
 end
 
@@ -644,7 +701,10 @@ function Serenity_HUD:OnMouseWheelMove( wndHandler, wndControl, nLastRelativeMou
 	elseif (wndHandler:GetName() == "TYVal") then
 		bar.textY = bar.textY + 1 * -math.floor(fScrollAmount)
 		self.display:FindChild("TYVal"):SetText(bar.textY)
-
+	elseif (wndHandler:GetName() == "BorderWidthVal") then
+		bar.borderWidth = bar.borderWidth + 1 * -math.floor(fScrollAmount)
+		self.display:FindChild("BorderWidthVal"):SetText(bar.borderWidth)
+		self:resetDisplay()
 	end
 	return true
 end
@@ -686,6 +746,9 @@ function Serenity_HUD:OnTextShowChecked( wndHandler, wndControl, eMouseButton )
 		self.listItem:GetData().fullHide = true
 	elseif (wndHandler:GetName() == "TextPercentage") then
 		self.listItem:GetData().textAsPercentage = true
+	elseif (wndHandler:GetName() == "HorizontalBar") then
+		self.listItem:GetData().orientation = orientation.horizontal
+		self:resetDisplay()
 	end
 end
 
@@ -698,6 +761,9 @@ function Serenity_HUD:OnTextShowUnChecked( wndHandler, wndControl, eMouseButton 
 		self.listItem:GetData().fullHide = false
 	elseif (wndHandler:GetName() == "TextPercentage") then
 		self.listItem:GetData().textAsPercentage = false
+	elseif (wndHandler:GetName() == "HorizontalBar") then
+		self.listItem:GetData().orientation = orientation.vertical
+		self:resetDisplay()
 	end
 end
 
@@ -722,6 +788,8 @@ function Serenity_HUD:OnNumberBoxChange( wndHandler, wndControl, strText )
 		bar.textX = num
 	elseif wndHandler:GetName() == "TYVal" then
 		bar.textY = num
+	elseif wndHandler:GetName() == "BorderWidthVal" then
+		bar.borderWidth = num
 	end
 end
 
@@ -741,6 +809,8 @@ function Serenity_HUD:DetailListItemClick( wndHandler, wndControl, eMouseButton,
 		bar:SetResource(wndHandler:FindChild("DetailName"):GetText())
 	elseif (wndHandler:GetParent():GetName() == "Textures") then
 		bar:SetTexture(wndHandler:FindChild("DetailName"):GetText())
+	elseif (wndHandler:GetParent():GetName() == "BGTextures") then
+		bar:SetBGTexture(wndHandler:FindChild("DetailName"):GetText())
 	end
 	self:ResetListItems()
 	self:resetDisplay()
@@ -765,36 +835,43 @@ function SHudBar:Init(parent, params)
 	self.frame = Apollo.LoadForm(self.par.xmlDoc, "Bar", nil, self)
 	self.bar = self.frame:FindChild("BarTex")
 	self.text = self.frame:FindChild("Text")
+	self.bg = self.frame:FindChild("Border")
 	
 	if params then
-		self.name = params[1]
-		self.dataObject = barType[params[2]]
-		self.texture = textures[params[3]]
-		self.fullColour = params[4]
-		self.emptyColour = params[5]
-		self.emptyHide = params[6]
-		self.fullHide = params[7]
-		self.width = params[8]
-		self.height = params[9]
-		self.x = params[10]
-		self.y = params[11]
-		self.showText = params[12]
-		self.textX = params[13]
-		self.textY = params[14]
-		self.textCol = params[15]
-		self.textAsPercentage = params[16]
+		self.name = params.name
+		self.dataObject = barType[params.barType]
+		self.texture = textures[params.texture]
+		self.BGTexture = BGTextures[params.BGTexture]
+		self.fullColour = params.fullColour
+		self.emptyColour = params.emptyColour
+		self.orientation = params.orientation
+		self.emptyHide = params.emptyHide
+		self.fullHide = params.fullHide
+		self.width = params.width
+		self.height = params.height
+		self.x = params.x
+		self.y = params.y
+		self.borderWidth = params.borderWidth
+		self.showText = params.showText
+		self.textX = params.textX
+		self.textY = params.textY
+		self.textCol = params.textCol
+		self.textAsPercentage = params.textAsPercentage
 	else
 		self.name = "Bar" .. (#parent.barList + 1)
 		self.dataObject = barType["Player Health"]
-		self.texture = textures["Clean Curve Left"]
+		self.texture = textures["Comity Vertical"]
+		self.BGTexture = BGTextures["Gloss"]
 		self.fullColour = "ff00ff00"
 		self.emptyColour = "55ffffff"
+		self.orientation = orientation.vertical
 		self.emptyHide = false
 		self.fullHide = false
 		self.width = 30
 		self.height = 100
 		self.x = 0
 		self.y = 0
+		self.borderWidth = 1
 		self.showText = false
 		self.textX = 0
 		self.textY = 0
@@ -804,12 +881,24 @@ function SHudBar:Init(parent, params)
 end
 
 function SHudBar:Refresh()
-	self.bar:SetEmptySprite(self.texture .. "BG")
-	self.bar:SetFullSprite(self.texture)
-	self.bar:SetBGColor(ApolloColor.new(self.emptyColour))
+	self.bar:SetEmptySprite("")
+	self.bar:SetFullSprite(self.texture)	
+	if self.orientation == orientation.horizontal then
+		self.bar:SetStyleEx("VerticallyAligned", false)
+		self.bar:SetStyleEx("BRtoLT", false)
+	else
+		self.bar:SetStyleEx("VerticallyAligned", true)
+		self.bar:SetStyleEx("BRtoLT", true)
+	end
+			
+	self.bg:SetSprite(self.BGTexture)
+	self.bg:SetBGColor(ApolloColor.new(self.emptyColour))
 	self.bar:SetBarColor(ApolloColor.new(self.fullColour))
 	self.bar:SetMax(self.dataObject.max())
 	self.bar:SetProgress(self.dataObject.current())
+	
+	self.bar:SetAnchorOffsets(self.borderWidth, self.borderWidth, -self.borderWidth, -self.borderWidth)
+	
 	self.text:Show(self.showText)
 	self.text:SetTextColor(self.textCol)
 	
@@ -846,6 +935,10 @@ end
 
 function SHudBar:SetTexture(textureName)
 	self.texture = textures[textureName]
+end
+
+function SHudBar:SetBGTexture(textureName)
+	self.BGTexture = BGTextures[textureName]
 end
 
 -----------------------------------------------------------------------------------------------
