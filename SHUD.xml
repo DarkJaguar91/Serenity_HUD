@@ -51,4 +51,130 @@
     <Sprite Name="LDragonV" Cycle="1">
         <Frame Texture="Serenity_HUD\tex\LeftDragonV.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
     </Sprite>
+    <Sprite Name="PlainH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\Plain.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="32" y5="32" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="PlainV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\PlainV.tga" x0="0" x1="0" x2="0" x3="0" x4="32" x5="32" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="GlossRoundFrame" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\GlossFrame.tga" x0="0" x1="0" x2="0" x3="5" x4="55" x5="60" y0="0" y1="0" y2="0" y3="6" y4="55" y5="60" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="GlossSquareFrame" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\GlossSqaureFrame.tga" x0="0" x1="0" x2="0" x3="6" x4="58" x5="64" y0="0" y1="0" y2="0" y3="6" y4="58" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="BloodGlaiveBBG" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\BloodGlaivesBBG.tga" x0="0" x1="0" x2="0" x3="0" x4="509" x5="509" y0="0" y1="0" y2="0" y3="0" y4="78" y5="78" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="BloodGlaiveLBG" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\BloodGlaivesLBG.tga" x0="0" x1="0" x2="0" x3="0" x4="78" x5="78" y0="0" y1="0" y2="0" y3="0" y4="509" y5="509" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="BloodGlaiveRBG" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\BloodGlaivesRBG.tga" x0="0" x1="0" x2="0" x3="0" x4="78" x5="78" y0="0" y1="0" y2="0" y3="0" y4="509" y5="509" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="BloodGlaiveTBG" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\BloodGlaivesTBG.tga" x0="0" x1="0" x2="0" x3="0" x4="509" x5="509" y0="0" y1="0" y2="0" y3="0" y4="78" y5="78" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="BloodGlaiveBot" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\BloodGlaivesBot.tga" x0="0" x1="0" x2="0" x3="0" x4="507" x5="507" y0="0" y1="0" y2="0" y3="0" y4="77" y5="77" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="BloodGlaiveLeft" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\BloodGlaivesLeft.tga" x0="0" x1="0" x2="0" x3="0" x4="77" x5="77" y0="0" y1="0" y2="0" y3="0" y4="507" y5="507" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="BloodGlaiveRight" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\BloodGlaivesRight.tga" x0="0" x1="0" x2="0" x3="0" x4="77" x5="77" y0="0" y1="0" y2="0" y3="0" y4="507" y5="507" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="BloodGlaiveTop" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\BloodGlaivesTop.tga" x0="0" x1="0" x2="0" x3="0" x4="507" x5="507" y0="0" y1="0" y2="0" y3="0" y4="77" y5="77" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ToleranceV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\ToleranceV.tga" x0="0" x1="0" x2="0" x3="0" x4="32" x5="32" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ToleranceH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\ToleranceH.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="32" y5="32" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="VeracityH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\VeracityH.tga" x0="0" x1="0" x2="0" x3="0" x4="250" x5="250" y0="0" y1="0" y2="0" y3="0" y4="32" y5="32" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="VeracityV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\VeracityV.tga" x0="0" x1="0" x2="0" x3="0" x4="32" x5="32" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="SmokedLightH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\LightSmokedH.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="SmokedLightV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\LightSmokedV.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="MetalPlateH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\MetalPlateH.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="MetalPlateV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\MetalPlateV.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="MetalSheetH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\MetalSheetH.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="MetalSheetV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\MetalSheetV.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="RootsH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\RootsH.tga" x0="0" x1="0" x2="0" x3="0" x4="250" x5="250" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="RootsV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\RootsV.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="SatinH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\SatinH.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="SatinV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\SatinV.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="SkullsH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\SkullsH.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="SkullsV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\SkullsV.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="SmokedV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\SmokedV.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="SmokedH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\SmokedH.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ThornsH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\thornsH.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ThornsV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\thornsV.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Tribal1H" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\Tribal1H.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Tribal1V" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\Tribal1V.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Tribal2H" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\Tribal2H.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Tribal2V" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\Tribal2V.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Tribal3H" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\tribal3H.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Tribal3V" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\tribal3V.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Tribal4H" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\Tribal4H.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Tribal4V" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\Tribal4V.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="TwirlsV" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\TwirlsV.tga" x0="0" x1="0" x2="0" x3="0" x4="64" x5="64" y0="0" y1="0" y2="0" y3="0" y4="256" y5="256" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="TwirlsH" Cycle="1">
+        <Frame Texture="Serenity_HUD\tex\TwirlsH.tga" x0="0" x1="0" x2="0" x3="0" x4="256" x5="256" y0="0" y1="0" y2="0" y3="0" y4="64" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
 </Sprites>

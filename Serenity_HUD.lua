@@ -27,18 +27,61 @@ local textures = {
 	["Ferous Scratch Horizontal"] = "SHUD:FerousScratchH",
 	["Barbed Wire Horizontal"] = "SHUD:BarbedWireH",
 	["Barbed Wire Vertical"] = "SHUD:BarbedWireV",
-	["Left Dragon Vertical"] = "SHUD:LDragonV",
-	["Left Dragon Horizontal"] = "SHUD:LDragonH",
-	["Right Dragon Vertical"] = "SHUD:RDragonV",
-	["Right Dragon Horizontal"] = "SHUD:RDragonH",
+	["Dragon Left - Vertical"] = "SHUD:LDragonV",
+	["Dragon Left - Horizontal"] = "SHUD:LDragonH",
+	["Dragon Right - Vertical"] = "SHUD:RDragonV",
+	["Dragon Right - Horizontal"] = "SHUD:RDragonH",
+	["Plain Vertical"] = "SHUD:PlainV",
+	["Plain Horizontal"] = "SHUD:PlainH",
+	["Blood Glaive Top"] = "SHUD:BloodGlaiveTop",
+	["Blood Glaive Bot"] = "SHUD:BloodGlaiveBot",
+	["Blood Glaive Left"] = "SHUD:BloodGlaiveLeft",
+	["Blood Glaive Right"] = "SHUD:BloodGlaiveRight",
+	["Tolerance Horizontal"] = "SHUD:ToleranceH",
+	["Tolerance Vertical"] = "SHUD:ToleranceV",
+	["Veracity Horizontal"] = "SHUD:VeracityH",
+	["Veracity Vertical"] = "SHUD:VeracityV",
+	["Smoked Light Horizontal"] = "SHUD:SmokedLightH",
+	["Smoked Light Vertical"] = "SHUD:SmokedLightV",
+	["Metal Plate Horizontal"] = "SHUD:MetalPlateH",
+	["Metal Plate Vertical"] = "SHUD:MetalPlateV",
+	["Twirls Horizontal"] = "SHUD:TwirlsH",
+	["Twirls Vertical"] = "SHUD:TwirlsV",
+	["Metal Sheet Horizontal"] = "SHUD:MetalSheetH",
+	["Metal Sheet Vertical"] = "SHUD:MetalSheetV",
+	["Roots Horizontal"] = "SHUD:RootsH",
+	["Roots Vertical"] = "SHUD:RootsV",
+	["Satin Horizontal"] = "SHUD:SatinH",
+	["Satin Vertical"] = "SHUD:SatinV",
+	["Skulls Horizontal"] = "SHUD:SkullsH",
+	["Skulls Vertical"] = "SHUD:SkullsV",
+	["Smoked Horizontal"] = "SHUD:SmokedH",
+	["Smoked Vertical"] = "SHUD:SmokedV",
+	["Thorns Horizontal"] = "SHUD:ThornsH",
+	["Thorns Vertical"] = "SHUD:ThornsV",
+	["Tribal 1 Horizontal"] = "SHUD:Tribal1H",
+	["Tribal 1 Vertical"] = "SHUD:Tribal1V",
+	["Tribal 2 Horizontal"] = "SHUD:Tribal2H",
+	["Tribal 2 Vertical"] = "SHUD:Tribal2V",
+	["Tribal 3 Horizontal"] = "SHUD:Tribal3H",
+	["Tribal 3 Vertical"] = "SHUD:Tribal3V",
+	["Tribal 4 Horizontal"] = "SHUD:Tribal4H",
+	["Tribal 4 Vertical"] = "SHUD:Tribal4V",
+	
 }
 
 local BGTextures = {
 	["Gloss"] = "SHUD:GlossBG",
+	["Gloss Rounded Frame"] = "SHUD:GlossRoundFrame",
+	["Gloss Square Frame"] = "SHUD:GlossSquareFrame",
 	["Arc Hud Left"] = "SHUD:ArcHudLeft",
 	["Arc Hud Right"] = "SHUD:ArcHudRight",
 	["Arc Hud Top"] = "SHUD:ArcHudTop",
 	["Arc Hud Bot"] = "SHUD:ArcHudBot",
+	["Blood Glaive Top"] = "SHUD:BloodGlaiveTBG",
+	["Blood Glaive Bot"] = "SHUD:BloodGlaiveBBG",
+	["Blood Glaive Left"] = "SHUD:BloodGlaiveLBG",
+	["Blood Glaive Right"] = "SHUD:BloodGlaiveRBG",
 }
 
 local orientation = {
@@ -541,6 +584,11 @@ function Serenity_HUD:resetDisplay()
 	
 	self.display:FindChild("EmptyHide"):SetCheck(currentBar.emptyHide)
 	self.display:FindChild("FullHide"):SetCheck(currentBar.fullHide)
+	if (currentBar.orientation == orientation.horizontal) then
+		self.display:FindChild("HorizontalBar"):SetCheck(true)
+	else
+		self.display:FindChild("HorizontalBar"):SetCheck(false)
+	end
 	self.display:FindChild("TextPercentage"):SetCheck(currentBar.textAsPercentage)
 	self.display:FindChild("BorderWidthVal"):SetText(currentBar.borderWidth)	
 	
@@ -882,8 +930,8 @@ function SHudBar:Init(parent, params)
 	else
 		self.name = "Bar" .. (#parent.barList + 1)
 		self.dataObject = barType["Player Health"]
-		self.texture = textures["Comity Vertical"]
-		self.BGTexture = BGTextures["Gloss"]
+		self.texture = textures["Plain Vertical"]
+		self.BGTexture = BGTextures["Gloss Square Frame"]
 		self.fullColour = "ff00ff00"
 		self.emptyColour = "55ffffff"
 		self.orientation = orientation.vertical
