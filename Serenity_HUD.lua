@@ -13,7 +13,7 @@ local SHudBar = {}
 -----------------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------------
-local version = "V1.6"
+local version = "V1.7"
 local textures = {
 	["Comity Vertical"] = "SHUD:ComityV",
 	["Comity Horizontal"] = "SHUD:ComityH",
@@ -67,7 +67,11 @@ local textures = {
 	["Tribal 3 Vertical"] = "SHUD:Tribal3V",
 	["Tribal 4 Horizontal"] = "SHUD:Tribal4H",
 	["Tribal 4 Vertical"] = "SHUD:Tribal4V",
-	
+	["Clean Curves Top"] = "SHUD:CleanCurvesTop",
+	["Clean Curves Bot"] = "SHUD:CleanCurvesBot",
+	["Clean Curves Left"] = "SHUD:CleanCurvesLeft",
+	["Clean Curves Right"] = "SHUD:CleanCurvesRight",
+	["Solid"] = "SHUD:Solid",
 }
 
 local BGTextures = {
@@ -82,6 +86,11 @@ local BGTextures = {
 	["Blood Glaive Bot"] = "SHUD:BloodGlaiveBBG",
 	["Blood Glaive Left"] = "SHUD:BloodGlaiveLBG",
 	["Blood Glaive Right"] = "SHUD:BloodGlaiveRBG",
+	["Clean Curves Top"] = "SHUD:CleanCurvesTopBG",
+	["Clean Curves Bot"] = "SHUD:CleanCurvesBotBG",
+	["Clean Curves Left"] = "SHUD:CleanCurvesLeftBG",
+	["Clean Curves Right"] = "SHUD:CleanCurvesRightBG",
+	["Solid"] = "SHUD:Solid",
 }
 
 local orientation = {
@@ -254,14 +263,24 @@ local barType = {
 	},	
 }
 
-local archudtheme = {{textY=77,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=-6,height=150,showText=true,textCol="ff02ff00",borderWidth=0,width=75,y=35,x=-65,name="Health",fullColour="ff3cff23",orientation="vertical",barType="Player Health",fullHide=false,emptyHide=false},
+local Themes = {
+	["Arc Hud"] = {{textY=77,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=25,height=150,showText=true,textCol="ff02ff00",borderWidth=0,width=75,y=35,x=-65,name="Health",fullColour="ff3cff23",orientation="vertical",barType="Player Health",fullHide=false,emptyHide=false},
 					 {textY=60,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=26,height=150,showText=true,textCol="ff23fff8",borderWidth=0,width=75,y=35,x=-55,name="Shield",fullColour="ff23ffee",orientation="vertical",barType="Player Shield & Absorb",fullHide=false,emptyHide=true},
 					 {textY=-83,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=18,height=150,showText=true,textCol="ffff23f2",borderWidth=0,width=75,y=35,x=-75,name="Mana",fullColour="ffff23f2",orientation="vertical",barType="Player 'Mana'",fullHide=true,emptyHide=false},
 					 {textY=0,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=-45,height=150,showText=true,textCol="ffff8223",borderWidth=0,width=75,y=35,x=-85,name="Resource",fullColour="ffff8223",orientation="vertical",barType="Player Resource",fullHide=true,emptyHide=true},
 					 {textY=-28,BGTexture="Arc Hud Top",textAsPercentage=true,emptyColour="ff606060",texture="Arc Hud Top",textX=0,height=40,showText=true,textCol="ffffffff",borderWidth=0,width=132,y=-20,x=0,name="Sprint",fullColour="ffffffff",orientation="horizontal",barType="Player Sprint",fullHide=true,emptyHide=false},
  					 {textY=77,BGTexture="Arc Hud Right",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Right",textX=0,height=150,showText=true,textCol="ff02ff00",borderWidth=0,width=75,y=35,x=65,name="Target Health",fullColour="ff3cff23",orientation="vertical",barType="Target Health",fullHide=false,emptyHide=true},
-					 {textY=60,BGTexture="Arc Hud Right",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Right",textX=-24,height=150,showText=true,textCol="ff23fff8",borderWidth=0,width=75,y=35,x=55,name="Target Shield",fullColour="ff23ffee",orientation="vertical",barType="Target Shield & Absorb",fullHide=false,emptyHide=true},}
+					 {textY=60,BGTexture="Arc Hud Right",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Right",textX=-24,height=150,showText=true,textCol="ff23fff8",borderWidth=0,width=75,y=35,x=55,name="Target Shield",fullColour="ff23ffee",orientation="vertical",barType="Target Shield & Absorb",fullHide=false,emptyHide=true},},
 
+	["Clean Curves"] = {{textY=70,BGTexture="Clean Curves Left",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Left",textX=25,height=130,showText=true,textCol="ff02ff00",borderWidth=1,width=25,y=30,x=-70,name="Health",fullColour="ff3cff23",orientation="vertical",barType="Player Health",fullHide=false,emptyHide=false},
+					 {textY=55,BGTexture="Clean Curves Left",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Left",textX=25,height=130,showText=true,textCol="ff23fff8",borderWidth=1,width=25,y=30,x=-60,name="Shield",fullColour="ff23ffee",orientation="vertical",barType="Player Shield & Absorb",fullHide=false,emptyHide=true},
+					 {textY=-75,BGTexture="Clean Curves Left",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Left",textX=15,height=130,showText=true,textCol="ffff23f2",borderWidth=1,width=25,y=30,x=-80,name="Mana",fullColour="ffff23f2",orientation="vertical",barType="Player 'Mana'",fullHide=true,emptyHide=false},
+					 {textY=0,BGTexture="Clean Curves Left",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Left",textX=-20,height=130,showText=true,textCol="ffff8223",borderWidth=1,width=25,y=30,x=-90,name="Resource",fullColour="ffff8223",orientation="vertical",barType="Player Resource",fullHide=true,emptyHide=true},
+					 {textY=-22,BGTexture="Clean Curves Top",textAsPercentage=true,emptyColour="ff606060",texture="Clean Curves Top",textX=0,height=30,showText=true,textCol="ffffffff",borderWidth=1,width=100,y=-47,x=0,name="Sprint",fullColour="ffffffff",orientation="horizontal",barType="Player Sprint",fullHide=true,emptyHide=false},
+ 					 {textY=70,BGTexture="Clean Curves Right",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Right",textX=-25,height=130,showText=true,textCol="ff02ff00",borderWidth=1,width=25,y=30,x=70,name="Target Health",fullColour="ff3cff23",orientation="vertical",barType="Target Health",fullHide=false,emptyHide=true},
+					 {textY=55,BGTexture="Clean Curves Right",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Right",textX=-25,height=130,showText=true,textCol="ff23fff8",borderWidth=1,width=25,y=30,x=60,name="Target Shield",fullColour="ff23ffee",orientation="vertical",barType="Target Shield & Absorb",fullHide=false,emptyHide=true},},
+}
+					
 local function ColorToString(c)
 	return string.format("%02x%02x%02x%02x", math.floor(c.a * 255 + 0.5), math.floor(c.r * 255 + 0.5), math.floor(c.g * 255 + 0.5), math.floor(c.b * 255 + 0.5))
 end
@@ -374,6 +393,8 @@ function Serenity_HUD:GenerateDetailsArray(bar)
 		textY = bar.textY, -- 14
 		textCol = bar.textCol, -- 15
 		textAsPercentage = bar.textAsPercentage, -- 16
+		onlyWhenTarget = bar.onlyWhenTarget,
+		onlyInCombat = bar.onlyInCombat,
 	}
 end
 
@@ -431,7 +452,14 @@ function Serenity_HUD:OnDocLoaded()
 			item:FindChild("DetailName"):SetText(i)
 		end
 		bgTexts:ArrangeChildrenVert()
-
+		self.themeChooser = self.wndMain:FindChild("ThemeChooser")
+		self.themeChooser:DestroyChildren()
+		for i, v in pairsByKeys(Themes) do
+			local item = Apollo.LoadForm(self.xmlDoc, "DetailListItem", self.themeChooser, self)
+			item:FindChild("DetailName"):SetText(i)
+		end
+		self.themeChooser:ArrangeChildrenVert()
+		self.themeChooser:Show(false)
 
 		
 		self:InitialiseBars()
@@ -466,10 +494,15 @@ function Serenity_HUD:OnInterfaceMenuListHasLoaded()
 end
 
 function Serenity_HUD:OnWindowManagementReady()
-	Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = "Serenity_HUDV1.6"})
+	Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = "Serenity_HUD"..version})
 end
 
 function Serenity_HUD:CreateBarsFromList(list)
+	for i, v in pairs(self.barList) do
+		v:Destroy()
+		v = nil
+	end
+	
 	self.barList = {}
 	for i, v in pairs(list) do
 		self:CreateNewBar(v)
@@ -483,7 +516,7 @@ function Serenity_HUD:InitialiseBars()
 	end
 	
 	if (#self.barList == 0) then
-		self:CreateBarsFromList(archudtheme)
+		self:CreateBarsFromList(Themes["Arc Hud"])
 	end
 end
 
@@ -584,6 +617,10 @@ function Serenity_HUD:resetDisplay()
 	
 	self.display:FindChild("EmptyHide"):SetCheck(currentBar.emptyHide)
 	self.display:FindChild("FullHide"):SetCheck(currentBar.fullHide)
+	self.display:FindChild("OnlyCombat"):SetCheck(currentBar.onlyInCombat)
+	self.display:FindChild("OnlyTarget"):SetCheck(currentBar.onlyWhenTarget)
+
+	
 	if (currentBar.orientation == orientation.horizontal) then
 		self.display:FindChild("HorizontalBar"):SetCheck(true)
 	else
@@ -661,7 +698,6 @@ function Serenity_HUD:GetTextureNameFromTextureValue(value)
 	end
 	return nil
 end
-
 
 function Serenity_HUD:UserChangedBarName( wndHandler, wndControl, strText )
 	self.listItem:GetData():SetName(wndHandler:GetText())
@@ -819,6 +855,10 @@ function Serenity_HUD:OnTextShowChecked( wndHandler, wndControl, eMouseButton )
 	elseif (wndHandler:GetName() == "HorizontalBar") then
 		self.listItem:GetData().orientation = orientation.horizontal
 		self:resetDisplay()
+	elseif (wndHandler:GetName() == "OnlyCombat") then
+		self.listItem:GetData().onlyInCombat = true
+	elseif (wndHandler:GetName() == "OnlyTarget") then
+		self.listItem:GetData().onlyWhenTarget = true
 	end
 end
 
@@ -834,6 +874,10 @@ function Serenity_HUD:OnTextShowUnChecked( wndHandler, wndControl, eMouseButton 
 	elseif (wndHandler:GetName() == "HorizontalBar") then
 		self.listItem:GetData().orientation = orientation.vertical
 		self:resetDisplay()
+	elseif (wndHandler:GetName() == "OnlyCombat") then
+		self.listItem:GetData().onlyInCombat = false
+	elseif (wndHandler:GetName() == "OnlyTarget") then
+		self.listItem:GetData().onlyWhenTarget = false
 	end
 end
 
@@ -863,6 +907,10 @@ function Serenity_HUD:OnNumberBoxChange( wndHandler, wndControl, strText )
 	end
 end
 
+function Serenity_HUD:ShowThemeChooser( wndHandler, wndControl, eMouseButton )
+	self.themeChooser:Show(true)
+end
+
 ---------------------------------------------------------------------------------------------------
 -- BarListItem Functions
 ---------------------------------------------------------------------------------------------------
@@ -881,6 +929,9 @@ function Serenity_HUD:DetailListItemClick( wndHandler, wndControl, eMouseButton,
 		bar:SetTexture(wndHandler:FindChild("DetailName"):GetText())
 	elseif (wndHandler:GetParent():GetName() == "BGTextures") then
 		bar:SetBGTexture(wndHandler:FindChild("DetailName"):GetText())
+	elseif (wndHandler:GetParent():GetName() == "ThemeChooser") then
+		self:CreateBarsFromList(Themes[wndHandler:FindChild("DetailName"):GetText()])
+		self.themeChooser:Show(false)
 	end
 	self:ResetListItems()
 	self:resetDisplay()
@@ -927,6 +978,8 @@ function SHudBar:Init(parent, params)
 		self.textY = params.textY
 		self.textCol = params.textCol
 		self.textAsPercentage = params.textAsPercentage
+		self.onlyInCombat = params.onlyInCombat
+		self.onlyWhenTarget = params.onlyWhenTarget
 	else
 		self.name = "Bar" .. (#parent.barList + 1)
 		self.dataObject = barType["Player Health"]
@@ -947,10 +1000,36 @@ function SHudBar:Init(parent, params)
 		self.textY = 0
 		self.textCol = "ffffffff"
 		self.textAsPercentage = false
+		self.onlyInCombat = false
+		self.onlyWhenTarget = false
 	end	
 end
 
 function SHudBar:Refresh()
+	if (not self.par.wndMain:IsVisible())then
+		if (self.onlyInCombat) then
+			if not GameLib.GetPlayerUnit():IsInCombat() and (self.dataObject.current() == self.dataObject.max()) then
+				self.frame:Show(false)
+				return
+			end
+		end
+		if (self.onlyWhenTarget) then
+			if GameLib.GetPlayerUnit():GetTarget() == nil then
+				self.frame:Show(false)
+				return
+			end
+		end
+		if (self.emptyHide and self.dataObject.current() == 0) then
+			self.frame:Show(false)
+			return
+		end
+		if (self.fullHide and self.dataObject.current() == self.dataObject.max()) then
+			self.frame:Show(false)
+			return
+		end
+	end
+	self.frame:Show(true)
+	
 	self.bar:SetEmptySprite("")
 	self.bar:SetFullSprite(self.texture)	
 	if self.orientation == orientation.horizontal then
@@ -979,12 +1058,6 @@ function SHudBar:Refresh()
 		self.text:SetText(string.format("%.1fK", self.dataObject.current()/1000))
 	else
 		self.text:SetText(string.format("%.0f", self.dataObject.current()))
-	end
-
-	if (not self.par.wndMain:IsVisible()) and ((self.emptyHide and self.dataObject.current() <= 0) or (self.fullHide and self.dataObject.current() == self.dataObject.max())) then
-		self.frame:Show(false)
-	else
-		self.frame:Show(true)
 	end
 	
 	self.frame:SetAnchorOffsets(self.x - self.width/2, self.y - self.height/2, self.x + self.width/2, self.y + self.height/2)
