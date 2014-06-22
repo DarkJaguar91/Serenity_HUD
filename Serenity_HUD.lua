@@ -264,21 +264,9 @@ local barType = {
 }
 
 local Themes = {
-	["Arc Hud"] = {{textY=77,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=25,height=150,showText=true,textCol="ff02ff00",borderWidth=0,width=75,y=35,x=-65,name="Health",fullColour="ff3cff23",orientation="vertical",barType="Player Health",fullHide=false,emptyHide=false},
-					 {textY=60,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=26,height=150,showText=true,textCol="ff23fff8",borderWidth=0,width=75,y=35,x=-55,name="Shield",fullColour="ff23ffee",orientation="vertical",barType="Player Shield & Absorb",fullHide=false,emptyHide=true},
-					 {textY=-83,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=18,height=150,showText=true,textCol="ffff23f2",borderWidth=0,width=75,y=35,x=-75,name="Mana",fullColour="ffff23f2",orientation="vertical",barType="Player 'Mana'",fullHide=true,emptyHide=false},
-					 {textY=0,BGTexture="Arc Hud Left",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Left",textX=-45,height=150,showText=true,textCol="ffff8223",borderWidth=0,width=75,y=35,x=-85,name="Resource",fullColour="ffff8223",orientation="vertical",barType="Player Resource",fullHide=true,emptyHide=true},
-					 {textY=-28,BGTexture="Arc Hud Top",textAsPercentage=true,emptyColour="ff606060",texture="Arc Hud Top",textX=0,height=40,showText=true,textCol="ffffffff",borderWidth=0,width=132,y=-20,x=0,name="Sprint",fullColour="ffffffff",orientation="horizontal",barType="Player Sprint",fullHide=true,emptyHide=false},
- 					 {textY=77,BGTexture="Arc Hud Right",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Right",textX=0,height=150,showText=true,textCol="ff02ff00",borderWidth=0,width=75,y=35,x=65,name="Target Health",fullColour="ff3cff23",orientation="vertical",barType="Target Health",fullHide=false,emptyHide=true},
-					 {textY=60,BGTexture="Arc Hud Right",textAsPercentage=false,emptyColour="ff606060",texture="Arc Hud Right",textX=-24,height=150,showText=true,textCol="ff23fff8",borderWidth=0,width=75,y=35,x=55,name="Target Shield",fullColour="ff23ffee",orientation="vertical",barType="Target Shield & Absorb",fullHide=false,emptyHide=true},},
-
-	["Clean Curves"] = {{textY=70,BGTexture="Clean Curves Left",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Left",textX=25,height=130,showText=true,textCol="ff02ff00",borderWidth=1,width=25,y=30,x=-70,name="Health",fullColour="ff3cff23",orientation="vertical",barType="Player Health",fullHide=false,emptyHide=false},
-					 {textY=55,BGTexture="Clean Curves Left",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Left",textX=25,height=130,showText=true,textCol="ff23fff8",borderWidth=1,width=25,y=30,x=-60,name="Shield",fullColour="ff23ffee",orientation="vertical",barType="Player Shield & Absorb",fullHide=false,emptyHide=true},
-					 {textY=-75,BGTexture="Clean Curves Left",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Left",textX=15,height=130,showText=true,textCol="ffff23f2",borderWidth=1,width=25,y=30,x=-80,name="Mana",fullColour="ffff23f2",orientation="vertical",barType="Player 'Mana'",fullHide=true,emptyHide=false},
-					 {textY=0,BGTexture="Clean Curves Left",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Left",textX=-20,height=130,showText=true,textCol="ffff8223",borderWidth=1,width=25,y=30,x=-90,name="Resource",fullColour="ffff8223",orientation="vertical",barType="Player Resource",fullHide=true,emptyHide=true},
-					 {textY=-22,BGTexture="Clean Curves Top",textAsPercentage=true,emptyColour="ff606060",texture="Clean Curves Top",textX=0,height=30,showText=true,textCol="ffffffff",borderWidth=1,width=100,y=-47,x=0,name="Sprint",fullColour="ffffffff",orientation="horizontal",barType="Player Sprint",fullHide=true,emptyHide=false},
- 					 {textY=70,BGTexture="Clean Curves Right",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Right",textX=-25,height=130,showText=true,textCol="ff02ff00",borderWidth=1,width=25,y=30,x=70,name="Target Health",fullColour="ff3cff23",orientation="vertical",barType="Target Health",fullHide=false,emptyHide=true},
-					 {textY=55,BGTexture="Clean Curves Right",textAsPercentage=false,emptyColour="ff606060",texture="Clean Curves Right",textX=-25,height=130,showText=true,textCol="ff23fff8",borderWidth=1,width=25,y=30,x=60,name="Target Shield",fullColour="ff23ffee",orientation="vertical",barType="Target Shield & Absorb",fullHide=false,emptyHide=true},},
+	["Arc Hud"] = {{name="Health",barType="Player Health",texture="Arc Hud Left",BGTexture="Arc Hud Left",fullColour="ff3cff23",emptyColour="ff606060",orientation="vertical",emptyHide=false,fullHide=false,width=75,height=150,x=-65,y=35,borderWidth=0,showText=true,textX=25,textY=80,textCol="ff02ff00",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=false,},{name="Shield",barType="Player Shield & Absorb",texture="Arc Hud Left",BGTexture="Arc Hud Left",fullColour="ff23ffee",emptyColour="ff606060",orientation="vertical",emptyHide=true,fullHide=false,width=75,height=150,x=-55,y=35,borderWidth=0,showText=true,textX=26,textY=60,textCol="ff23fff8",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=nil,},{name="Mana",barType="Player 'Mana'",texture="Arc Hud Left",BGTexture="Arc Hud Left",fullColour="ffff23f2",emptyColour="ff606060",orientation="vertical",emptyHide=false,fullHide=true,width=75,height=150,x=-75,y=35,borderWidth=0,showText=true,textX=18,textY=-83,textCol="ffff23f2",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=nil,},{name="Resource",barType="Player Resource",texture="Arc Hud Left",BGTexture="Arc Hud Left",fullColour="ffff8223",emptyColour="ff606060",orientation="vertical",emptyHide=true,fullHide=true,width=75,height=150,x=-85,y=35,borderWidth=0,showText=true,textX=-45,textY=0,textCol="ffff8223",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=nil,},{name="Sprint",barType="Player Sprint",texture="Arc Hud Top",BGTexture="Arc Hud Top",fullColour="ffffffff",emptyColour="ff606060",orientation="horizontal",emptyHide=false,fullHide=true,width=132,height=40,x=0,y=-20,borderWidth=0,showText=true,textX=0,textY=-28,textCol="ffffffff",textAsPercentage=true,onlyInCombat=nil,onlyWhenTarget=nil,},{name="Target Health",barType="Target Health",texture="Arc Hud Right",BGTexture="Arc Hud Right",fullColour="ff3cff23",emptyColour="ff606060",orientation="vertical",emptyHide=false,fullHide=false,width=75,height=150,x=65,y=35,borderWidth=0,showText=true,textX=0,textY=77,textCol="ff02ff00",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=true,},{name="Target Shield",barType="Target Shield & Absorb",texture="Arc Hud Right",BGTexture="Arc Hud Right",fullColour="ff23ffee",emptyColour="ff606060",orientation="vertical",emptyHide=true,fullHide=false,width=75,height=150,x=55,y=35,borderWidth=0,showText=true,textX=-24,textY=60,textCol="ff23fff8",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=true,},},
+	["Clean Curves"] = {{name="Health",barType="Player Health",texture="Clean Curves Left",BGTexture="Clean Curves Left",fullColour="ff3cff23",emptyColour="ff606060",orientation="vertical",emptyHide=false,fullHide=false,width=25,height=130,x=-70,y=30,borderWidth=1,showText=true,textX=25,textY=70,textCol="ff02ff00",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=nil,},{name="Shield",barType="Player Shield & Absorb",texture="Clean Curves Left",BGTexture="Clean Curves Left",fullColour="ff23ffee",emptyColour="ff606060",orientation="vertical",emptyHide=true,fullHide=false,width=25,height=130,x=-60,y=30,borderWidth=1,showText=true,textX=25,textY=55,textCol="ff23fff8",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=nil,},{name="Mana",barType="Player 'Mana'",texture="Clean Curves Left",BGTexture="Clean Curves Left",fullColour="ffff23f2",emptyColour="ff606060",orientation="vertical",emptyHide=false,fullHide=true,width=25,height=130,x=-80,y=30,borderWidth=1,showText=true,textX=15,textY=-75,textCol="ffff23f2",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=nil,},{name="Resource",barType="Player Resource",texture="Clean Curves Left",BGTexture="Clean Curves Left",fullColour="ffff8223",emptyColour="ff606060",orientation="vertical",emptyHide=true,fullHide=true,width=25,height=130,x=-90,y=30,borderWidth=1,showText=true,textX=-20,textY=0,textCol="ffff8223",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=nil,},{name="Sprint",barType="Player Sprint",texture="Clean Curves Top",BGTexture="Clean Curves Top",fullColour="ffffffff",emptyColour="ff606060",orientation="horizontal",emptyHide=false,fullHide=true,width=100,height=30,x=0,y=-47,borderWidth=1,showText=true,textX=0,textY=-22,textCol="ffffffff",textAsPercentage=true,onlyInCombat=nil,onlyWhenTarget=nil,},{name="Target Health",barType="Target Health",texture="Clean Curves Right",BGTexture="Clean Curves Right",fullColour="ff3cff23",emptyColour="ff606060",orientation="vertical",emptyHide=false,fullHide=false,width=25,height=130,x=70,y=30,borderWidth=1,showText=true,textX=-25,textY=70,textCol="ff02ff00",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=true,},{name="Target Shield",barType="Target Shield & Absorb",texture="Clean Curves Right",BGTexture="Clean Curves Right",fullColour="ff23ffee",emptyColour="ff606060",orientation="vertical",emptyHide=true,fullHide=false,width=25,height=130,x=60,y=30,borderWidth=1,showText=true,textX=-25,textY=55,textCol="ff23fff8",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=true,},},
+	["Plain"] = {{name="Health",barType="Player Health",texture="Plain Vertical",BGTexture="Gloss Square Frame",fullColour="ff00ff00",emptyColour="ff000000",orientation="vertical",emptyHide=false,fullHide=false,width=30,height=120,x=-85,y=30,borderWidth=1,showText=true,textX=5,textY=68,textCol="ff08ff00",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=false,},{name="Shield",barType="Player Shield & Absorb",texture="Plain Vertical",BGTexture="Gloss Square Frame",fullColour="ff00ffdc",emptyColour="ff000000",orientation="vertical",emptyHide=true,fullHide=false,width=20,height=100,x=-59,y=20,borderWidth=1,showText=true,textX=5,textY=56,textCol="ff00ffe1",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=false,},{name="Mana",barType="Player 'Mana'",texture="Plain Vertical",BGTexture="Gloss Square Frame",fullColour="ffff00b4",emptyColour="ff000000",orientation="vertical",emptyHide=false,fullHide=true,width=30,height=120,x=-117,y=30,borderWidth=1,showText=true,textX=5,textY=-68,textCol="ffff00b4",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=false,},{name="Resource",barType="Player Resource",texture="Plain Vertical",BGTexture="Gloss Square Frame",fullColour="ffff6400",emptyColour="ff000000",orientation="vertical",emptyHide=true,fullHide=true,width=30,height=120,x=-148,y=30,borderWidth=1,showText=true,textX=0,textY=-68,textCol="ffff6400",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=false,},{name="Target Health",barType="Target Health",texture="Plain Vertical",BGTexture="Gloss Square Frame",fullColour="ff00ff00",emptyColour="ff000000",orientation="vertical",emptyHide=false,fullHide=false,width=30,height=120,x=85,y=30,borderWidth=1,showText=true,textX=-10,textY=68,textCol="ff08ff00",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=true,},{name="Target Shield",barType="Target Shield & Absorb",texture="Plain Vertical",BGTexture="Gloss Square Frame",fullColour="ff00ffdc",emptyColour="ff000000",orientation="vertical",emptyHide=true,fullHide=false,width=20,height=100,x=59,y=20,borderWidth=1,showText=true,textX=-5,textY=56,textCol="ff00ffe1",textAsPercentage=false,onlyInCombat=true,onlyWhenTarget=true,},{name="Sprint",barType="Player Sprint",texture="Plain Horizontal",BGTexture="Gloss Square Frame",fullColour="ffffffff",emptyColour="55000000",orientation="horizontal",emptyHide=false,fullHide=true,width=96,height=20,x=0,y=-40,borderWidth=1,showText=true,textX=0,textY=-18,textCol="ffffffff",textAsPercentage=true,onlyInCombat=false,onlyWhenTarget=false,},},
 }
 					
 local function ColorToString(c)
@@ -423,6 +411,7 @@ function Serenity_HUD:OnDocLoaded()
 	    self.wndMain:Show(false, true)
 		self.listItem = self.wndMain:FindChild("BarListDisp")
 		self.display = self.wndMain:FindChild("DataDisplay")
+		self.IEWindow = Apollo.LoadForm(self.xmlDoc, "ExportImportWindow", nil, self)
 		
 		-- example bar setup
 		local exampleBar = self.wndMain:FindChild("ExampleBar")
@@ -909,6 +898,39 @@ end
 
 function Serenity_HUD:ShowThemeChooser( wndHandler, wndControl, eMouseButton )
 	self.themeChooser:Show(true)
+end
+
+function Serenity_HUD:ExportTheme( wndHandler, wndControl, eMouseButton )
+	self.IEWindow:Show(true)
+	
+	local out = "{"
+	for i, v in pairs(self.barList) do
+		out = out .. "{"
+		out = out .. "name=\"" .. v.name .. "\","
+		out = out .. "barType=\"" .. self:GetBarTypeNameFromObject(v.dataObject) .. "\","
+		out = out .. "texture=\"" .. self:GetTextureNameFromTextureValue(v.texture) .. "\","
+		out = out .. "BGTexture=\"" .. self:GetTextureNameFromBGTextureValue(v.BGTexture) .. "\","
+		out = out .. "fullColour=\"" .. v.fullColour .. "\","
+		out = out .. "emptyColour=\"" .. v.emptyColour .. "\","
+		out = out .. "orientation=\"" .. v.orientation .. "\","
+		out = out .. "emptyHide=" .. tostring(v.emptyHide) .. ","
+		out = out .. "fullHide=" .. tostring(v.fullHide) .. ","
+		out = out .. "width=" .. tostring(v.width) .. ","
+		out = out .. "height=" .. tostring(v.height) .. ","
+		out = out .. "x=" .. tostring(v.x) .. ","
+		out = out .. "y=" .. tostring(v.y) .. ","
+		out = out .. "borderWidth=" .. tostring(v.borderWidth) .. ","
+		out = out .. "showText=" .. tostring(v.showText) .. ","
+		out = out .. "textX=" .. tostring(v.textX) .. ","
+		out = out .. "textY=" .. tostring(v.textY) .. ","
+		out = out .. "textCol=\"" .. tostring(v.textCol) .. "\","
+		out = out .. "textAsPercentage=" .. tostring(v.textAsPercentage) .. ","
+		out = out .. "onlyInCombat=" .. tostring(v.onlyInCombat) .. ","
+		out = out .. "onlyWhenTarget=" .. tostring(v.onlyWhenTarget) .. ","
+		out = out .. "},"
+	end
+	out = out .. "}"
+	self.IEWindow:FindChild("EditBox"):SetText(out)
 end
 
 ---------------------------------------------------------------------------------------------------
